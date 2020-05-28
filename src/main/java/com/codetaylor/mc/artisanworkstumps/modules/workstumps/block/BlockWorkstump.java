@@ -6,7 +6,6 @@ import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
 import com.codetaylor.mc.athenaeum.spi.BlockPartialBase;
 import com.codetaylor.mc.athenaeum.util.Properties;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -26,7 +25,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.awt.*;
 
 public class BlockWorkstump
     extends BlockPartialBase
@@ -47,7 +45,6 @@ public class BlockWorkstump
   public static final String NAME_DESIGNER = "workstump_designer";
   public static final String NAME_TANNER = "workstump_tanner";
   public static final String NAME_POTTER = "workstump_potter";
-
 
   private final String tableName;
 
