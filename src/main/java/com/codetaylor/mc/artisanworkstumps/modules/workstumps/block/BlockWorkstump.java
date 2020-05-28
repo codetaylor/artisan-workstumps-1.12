@@ -63,6 +63,13 @@ public class BlockWorkstump
   // - Interaction
   // ---------------------------------------------------------------------------
 
+  @Nullable
+  @Override
+  public String getHarvestTool(@Nonnull IBlockState state) {
+
+    return "axe";
+  }
+
   @SuppressWarnings("deprecation")
   @Nullable
   @Override
