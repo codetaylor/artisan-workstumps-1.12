@@ -6,6 +6,8 @@ import com.codetaylor.mc.athenaeum.module.ModuleManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(
     modid = ModArtisanWorkstumps.MOD_ID,
@@ -15,10 +17,14 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 )
 public class ModArtisanWorkstumps {
 
+  public static final boolean DEBUG = true;
+
   public static final String MOD_ID = "artisanworkstumps";
   public static final String VERSION = "@@VERSION@@";
   public static final String NAME = "Artisan Workstumps";
   public static final String DEPENDENCIES = "required-after:athenaeum;required-after:artisanworktables;";
+
+  public static final Logger LOGGER = LogManager.getLogger(ModArtisanWorkstumps.class);
 
   private final ModuleManager moduleManager;
 

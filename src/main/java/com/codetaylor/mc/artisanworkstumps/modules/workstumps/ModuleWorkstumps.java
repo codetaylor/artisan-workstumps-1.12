@@ -40,6 +40,10 @@ public class ModuleWorkstumps
     MinecraftForge.EVENT_BUS.register(new InteractionMouseScrollEventHandler(PACKET_SERVICE));
   }
 
+  // ---------------------------------------------------------------------------
+  // - Registration
+  // ---------------------------------------------------------------------------
+
   @Override
   public void onNetworkRegister(IPacketRegistry registry) {
 
@@ -58,6 +62,10 @@ public class ModuleWorkstumps
 
     BlockInitializer.onClientRegister(registry);
   }
+
+  // ---------------------------------------------------------------------------
+  // - Object Holders
+  // ---------------------------------------------------------------------------
 
   @GameRegistry.ObjectHolder(MOD_ID)
   public static class Blocks {
