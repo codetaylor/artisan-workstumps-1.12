@@ -3,8 +3,8 @@
   "defaults": {
     "model": "artisanworkstumps:workstump",
     "textures": {
-      "theme_side": "artisanworktables:blocks/mage_side",
-      "theme_top": "artisanworktables:blocks/mage_top"
+      "theme_side": "artisanworktables:blocks/mage_side_inactive",
+      "theme_top": "artisanworktables:blocks/mage_top_inactive"
     }
   },
   "variants": {
@@ -20,6 +20,15 @@
       "west": {
         "y": 270
       }
+    },
+    "active": {
+      "true": {
+        "textures": {
+          "theme_side": "artisanworktables:blocks/mage_side",
+          "theme_top": "artisanworktables:blocks/mage_top"
+        }
+      },
+      "false": {}
     }
   }
 }

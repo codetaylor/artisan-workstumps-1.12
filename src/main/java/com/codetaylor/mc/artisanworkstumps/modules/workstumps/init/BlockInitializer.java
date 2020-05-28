@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworkstumps.modules.workstumps.init;
 
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
+import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstumpMage;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.athenaeum.interaction.spi.TESRInteractable;
 import com.codetaylor.mc.athenaeum.registry.Registry;
@@ -24,7 +25,7 @@ public final class BlockInitializer {
     registry.registerBlockWithItem(new BlockWorkstump("jeweler"), BlockWorkstump.NAME_JEWELER);
     registry.registerBlockWithItem(new BlockWorkstump("basic"), BlockWorkstump.NAME_BASIC);
     registry.registerBlockWithItem(new BlockWorkstump("engineer"), BlockWorkstump.NAME_ENGINEER);
-    registry.registerBlockWithItem(new BlockWorkstump("mage"), BlockWorkstump.NAME_MAGE);
+    registry.registerBlockWithItem(new BlockWorkstumpMage(), BlockWorkstump.NAME_MAGE);
     registry.registerBlockWithItem(new BlockWorkstump("scribe"), BlockWorkstump.NAME_SCRIBE);
     registry.registerBlockWithItem(new BlockWorkstump("chemist"), BlockWorkstump.NAME_CHEMIST);
     registry.registerBlockWithItem(new BlockWorkstump("farmer"), BlockWorkstump.NAME_FARMER);

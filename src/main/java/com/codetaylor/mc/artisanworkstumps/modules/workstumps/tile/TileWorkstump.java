@@ -17,6 +17,7 @@ import com.codetaylor.mc.athenaeum.network.tile.data.TileDataInteger;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataItemStackHandler;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileData;
 import com.codetaylor.mc.athenaeum.network.tile.spi.TileEntityDataBase;
+import com.codetaylor.mc.athenaeum.util.BlockHelper;
 import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
 import com.codetaylor.mc.athenaeum.util.Properties;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
@@ -332,4 +333,12 @@ public class TileWorkstump
     return Block.getStateId(state);
   }
 
+  @Override
+  public void onTileDataUpdate() {
+
+    if ("mage".equals(this.tableName)
+        && this.inputTileDataItemStackHandler.isDirty()) {
+      BlockHelper.notifyBlockUpdate(this.world, this.pos);
+    }
+  }
 }

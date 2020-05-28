@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworkstumps.modules.workstumps;
 
 import com.codetaylor.mc.artisanworkstumps.ModArtisanWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
+import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstumpMage;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.init.BlockInitializer;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.init.PacketInitializer;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
@@ -83,7 +84,7 @@ public class ModuleWorkstumps
     public static final BlockWorkstump WORKSTUMP_ENGINEER;
 
     @GameRegistry.ObjectHolder(BlockWorkstump.NAME_MAGE)
-    public static final BlockWorkstump WORKSTUMP_MAGE;
+    public static final BlockWorkstumpMage WORKSTUMP_MAGE;
 
     @GameRegistry.ObjectHolder(BlockWorkstump.NAME_SCRIBE)
     public static final BlockWorkstump WORKSTUMP_SCRIBE;

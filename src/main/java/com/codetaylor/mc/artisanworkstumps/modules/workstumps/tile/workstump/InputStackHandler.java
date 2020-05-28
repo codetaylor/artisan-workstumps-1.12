@@ -38,4 +38,16 @@ public class InputStackHandler
 
     return this.height;
   }
+
+  public boolean isEmpty() {
+
+    for (int i = 0; i < this.getSlots(); i++) {
+
+      if (!this.getStackInSlot(i).isEmpty()) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
