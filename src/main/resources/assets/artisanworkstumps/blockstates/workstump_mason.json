@@ -1,0 +1,25 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "artisanworkstumps:workstump",
+    "textures": {
+      "theme_side": "artisanworktables:blocks/mason_side",
+      "theme_top": "artisanworktables:blocks/mason_top"
+    }
+  },
+  "variants": {
+    "facing": {
+      "north": {
+      },
+      "east": {
+        "y": 90
+      },
+      "south": {
+        "y": 180
+      },
+      "west": {
+        "y": 270
+      }
+    }
+  }
+}
