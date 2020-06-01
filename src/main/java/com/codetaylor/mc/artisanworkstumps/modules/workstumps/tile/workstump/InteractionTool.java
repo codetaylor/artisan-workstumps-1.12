@@ -44,17 +44,19 @@ public class InteractionTool
       return false;
     }
 
+    IArtisanRecipe recipe = tile.getWorkstumpRecipe(player);
+
     ItemStack heldItemStack = player.getHeldItem(hand);
     boolean sneaking = player.isSneaking();
 
-    // Allow an empty hand if clearing, otherwise disallow.
+    // Allow an empty hand if clearing, otherwise test.
     if (sneaking
         && heldItemStack.isEmpty()
         && ModuleWorkstumpsConfig.WORKSTUMP_COMMON.ALLOW_RECIPE_CLEAR) {
       return true;
 
     } else if (heldItemStack.isEmpty()) {
-      return false;
+      return (recipe != null) && (recipe.getToolCount() == 0);
     }
 
     Item item = heldItemStack.getItem();
@@ -63,8 +65,6 @@ public class InteractionTool
     if (registryName == null) {
       return false;
     }
-
-    IArtisanRecipe recipe = tile.getWorkstumpRecipe(player);
 
     if (sneaking) {
       // Player is sneaking, allow only tools for recipe repeat.
