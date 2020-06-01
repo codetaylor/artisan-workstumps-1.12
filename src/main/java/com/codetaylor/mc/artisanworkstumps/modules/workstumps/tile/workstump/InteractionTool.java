@@ -114,7 +114,7 @@ public class InteractionTool
 
     } else {
       // Use the tool to advance the recipe progress.
-      this.doRecipeProgress(tile, world, hitPos, player, hitX, hitY, hitZ, heldItem);
+      this.doRecipeProgress(tile, world, hitPos, player, hitX, hitY, hitZ);
     }
 
     return true;
@@ -228,19 +228,19 @@ public class InteractionTool
     }
   }
 
-  private void doRecipeProgress(TileWorkstump tile, World world, BlockPos hitPos, EntityPlayer player, float hitX, float hitY, float hitZ, ItemStack heldItem) {
+  private void doRecipeProgress(TileWorkstump tile, World world, BlockPos hitPos, EntityPlayer player, float hitX, float hitY, float hitZ) {
 
     IArtisanRecipe recipe = tile.getWorkstumpRecipe(player);
 
     if (!world.isRemote) {
-      this.doRecipeProgressServer(tile, world, hitPos, player, heldItem, recipe);
+      this.doRecipeProgressServer(tile, world, hitPos, player, recipe);
 
     } else {
       this.doRecipeProgressClient(tile, world, hitX, hitY, hitZ);
     }
   }
 
-  private void doRecipeProgressServer(TileWorkstump tile, World world, BlockPos hitPos, EntityPlayer player, ItemStack heldItem, IArtisanRecipe recipe) {
+  private void doRecipeProgressServer(TileWorkstump tile, World world, BlockPos hitPos, EntityPlayer player, IArtisanRecipe recipe) {
 
     world.playSound(null, hitPos, SoundEvents.BLOCK_WOOD_HIT, SoundCategory.BLOCKS, 1, 1);
 
