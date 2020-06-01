@@ -1,0 +1,16 @@
+[
+{
+  "modid": "artisanworkstumps",
+  "name": "Artisan Workstumps",
+  "description": "In-world crafting stumps for Artisan Worktables.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["codetaylor"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
