@@ -28,12 +28,12 @@ public class ModuleWorkstumpsConfig {
   }
 
   // ---------------------------------------------------------------------------
-  // - Workstump Common
+  // - Workstump
   // ---------------------------------------------------------------------------
 
-  public static WorkstumpCommon WORKSTUMP_COMMON = new WorkstumpCommon();
+  public static Workstump WORKSTUMP = new Workstump();
 
-  public static class WorkstumpCommon {
+  public static class Workstump {
 
     @Config.Comment({
         "If this list is not empty, only the recipes listed here will be allowed.",
@@ -78,15 +78,6 @@ public class ModuleWorkstumpsConfig {
     })
     @Config.RangeInt(min = 0)
     public int RECIPE_REPEAT_TOOL_DAMAGE = 1;
-  }
-
-  // ---------------------------------------------------------------------------
-  // - Workstump
-  // ---------------------------------------------------------------------------
-
-  public static Workstump WORKSTUMP = new Workstump();
-
-  public static class Workstump {
 
     @Config.Comment({
         "The number of tool hits required to complete a craft.",

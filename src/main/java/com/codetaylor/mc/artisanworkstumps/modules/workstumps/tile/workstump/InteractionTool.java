@@ -52,7 +52,7 @@ public class InteractionTool
     // Allow an empty hand if clearing, otherwise test.
     if (sneaking
         && heldItemStack.isEmpty()
-        && ModuleWorkstumpsConfig.WORKSTUMP_COMMON.ALLOW_RECIPE_CLEAR) {
+        && ModuleWorkstumpsConfig.WORKSTUMP.ALLOW_RECIPE_CLEAR) {
       return true;
 
     } else if (heldItemStack.isEmpty()) {
@@ -107,7 +107,7 @@ public class InteractionTool
         // Remove all stuffs from crafting grid
         this.doRecipeClear(tile, world, player);
 
-      } else if (ModuleWorkstumpsConfig.WORKSTUMP_COMMON.ALLOW_RECIPE_REPEAT) {
+      } else if (ModuleWorkstumpsConfig.WORKSTUMP.ALLOW_RECIPE_REPEAT) {
         // Repeat the last recipe
         this.doRecipeRepeat(tile, player, heldItem);
       }
@@ -221,7 +221,7 @@ public class InteractionTool
 
     // Damage the held item.
 
-    int toolDamage = ModuleWorkstumpsConfig.WORKSTUMP_COMMON.RECIPE_REPEAT_TOOL_DAMAGE;
+    int toolDamage = ModuleWorkstumpsConfig.WORKSTUMP.RECIPE_REPEAT_TOOL_DAMAGE;
 
     if (!tile.getWorld().isRemote && toolDamage > 0) {
       heldItem.attemptDamageItem(toolDamage, RandomHelper.random(), (EntityPlayerMP) player);

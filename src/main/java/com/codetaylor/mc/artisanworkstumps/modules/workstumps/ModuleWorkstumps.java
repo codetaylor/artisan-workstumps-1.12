@@ -47,7 +47,7 @@ public class ModuleWorkstumps
 
     super.onPreInitializationEvent(event);
 
-    if (ModuleWorkstumpsConfig.WORKSTUMP_COMMON.ALLOW_RECIPE_REPEAT) {
+    if (ModuleWorkstumpsConfig.WORKSTUMP.ALLOW_RECIPE_REPEAT) {
       MinecraftForge.EVENT_BUS.register(new RecipeRepeat.RightClickBlockEventHandler());
     }
   }
