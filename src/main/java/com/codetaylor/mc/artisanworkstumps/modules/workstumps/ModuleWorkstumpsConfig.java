@@ -64,16 +64,16 @@ public class ModuleWorkstumpsConfig {
 
     @Config.Comment({
         "If this is true, a player will be allowed to sneak + click using a",
-        "hammer to automatically place items from their inventory into the",
+        "tool to automatically place items from their inventory into the",
         "workstump's crafting grid that match the ingredients for the last",
-        "recipe completed. The hammer will be damaged, see RECIPE_REPEAT_TOOL_DAMAGE.",
+        "recipe completed. The tool will be damaged, see RECIPE_REPEAT_TOOL_DAMAGE.",
         "Default: " + false
     })
     public boolean ALLOW_RECIPE_REPEAT = false;
 
     @Config.Comment({
         "If ALLOW_RECIPE_REPEAT is enabled, this is the amount of damage that",
-        "will be applied to the hammer. Set to zero to disable.",
+        "will be applied to the tool. Set to zero to disable.",
         "Default: " + 1
     })
     @Config.RangeInt(min = 0)
@@ -89,7 +89,7 @@ public class ModuleWorkstumpsConfig {
   public static class Workstump {
 
     @Config.Comment({
-        "The number of hammer hits required to complete a craft.",
+        "The number of tool hits required to complete a craft.",
         "Default: " + 4
     })
     @Config.RangeInt(min = 1)
