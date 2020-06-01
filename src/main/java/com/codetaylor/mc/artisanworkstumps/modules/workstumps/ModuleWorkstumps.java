@@ -3,6 +3,7 @@ package com.codetaylor.mc.artisanworkstumps.modules.workstumps;
 import com.codetaylor.mc.artisanworkstumps.ModArtisanWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstumpMage;
+import com.codetaylor.mc.artisanworkstumps.modules.workstumps.event.RecipeRepeat;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.init.BlockInitializer;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.init.PacketInitializer;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
@@ -14,6 +15,7 @@ import com.codetaylor.mc.athenaeum.network.tile.ITileDataService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,6 +40,16 @@ public class ModuleWorkstumps
     TILE_DATA_SERVICE = this.enableNetworkTileDataService(PACKET_SERVICE);
 
     MinecraftForge.EVENT_BUS.register(new InteractionMouseScrollEventHandler(PACKET_SERVICE));
+  }
+
+  @Override
+  public void onPreInitializationEvent(FMLPreInitializationEvent event) {
+
+    super.onPreInitializationEvent(event);
+
+    if (ModuleWorkstumpsConfig.WORKSTUMP_COMMON.ALLOW_RECIPE_REPEAT) {
+      MinecraftForge.EVENT_BUS.register(new RecipeRepeat.RightClickBlockEventHandler());
+    }
   }
 
   // ---------------------------------------------------------------------------

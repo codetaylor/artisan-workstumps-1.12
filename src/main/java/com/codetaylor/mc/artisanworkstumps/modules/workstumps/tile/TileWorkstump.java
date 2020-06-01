@@ -135,7 +135,7 @@ public class TileWorkstump
       return null;
     }
 
-    IArtisanRecipe recipe = ArtisanAPI.getRecipe(this.tableName + ":" + this.retainedRecipeName);
+    IArtisanRecipe recipe = ArtisanAPI.getRecipe(this.retainedRecipeName);
 
     if (recipe == null) {
       this.retainedRecipeName = null;
