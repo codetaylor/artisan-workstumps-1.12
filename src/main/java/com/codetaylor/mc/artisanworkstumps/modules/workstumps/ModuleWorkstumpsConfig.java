@@ -36,24 +36,6 @@ public class ModuleWorkstumpsConfig {
   public static class Workstump {
 
     @Config.Comment({
-        "If this list is not empty, only the recipes listed here will be allowed.",
-        "",
-        "The whitelist takes priority over the blacklist.",
-        "",
-        "String format is a recipe resource location: (domain):(path) or (domain):*"
-    })
-    public String[] RECIPE_WHITELIST = new String[0];
-
-    @Config.Comment({
-        "If this list is not empty, recipes listed here will be disallowed.",
-        "",
-        "The whitelist takes priority over the blacklist.",
-        "",
-        "String format is a recipe resource location: (domain):(path) or (domain):*"
-    })
-    public String[] RECIPE_BLACKLIST = new String[0];
-
-    @Config.Comment({
         "If this is true, a player will be allowed to sneak + click using an",
         "empty hand to remove all items from the workstump's crafting grid.",
         "The removed items will be placed into the player's inventory or on top",
