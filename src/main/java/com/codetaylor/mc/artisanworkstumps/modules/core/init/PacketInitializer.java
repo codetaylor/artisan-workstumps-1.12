@@ -1,6 +1,6 @@
-package com.codetaylor.mc.artisanworkstumps.modules.workstumps.init;
+package com.codetaylor.mc.artisanworkstumps.modules.core.init;
 
-import com.codetaylor.mc.artisanworkstumps.modules.workstumps.network.SCPacketParticleProgress;
+import com.codetaylor.mc.artisanworkstumps.modules.core.network.SCPacketParticleProgress;
 import com.codetaylor.mc.athenaeum.interaction.network.CSPacketInteractionMouseWheel;
 import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.tile.SCPacketTileData;

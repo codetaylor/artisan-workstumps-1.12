@@ -1,4 +1,4 @@
-package com.codetaylor.mc.artisanworkstumps.modules.workstumps.network;
+package com.codetaylor.mc.artisanworkstumps.modules.core.network;
 
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
 import com.codetaylor.mc.athenaeum.util.ParticleHelper;

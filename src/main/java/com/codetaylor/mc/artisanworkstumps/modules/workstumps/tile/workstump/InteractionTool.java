@@ -2,7 +2,7 @@ package com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.workstump;
 
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
-import com.codetaylor.mc.artisanworkstumps.modules.workstumps.network.SCPacketParticleProgress;
+import com.codetaylor.mc.artisanworkstumps.modules.core.network.SCPacketParticleProgress;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;

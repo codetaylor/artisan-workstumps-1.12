@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworkstumps;
 
+import com.codetaylor.mc.artisanworkstumps.modules.core.ModuleCore;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.athenaeum.gui.GuiHandler;
 import com.codetaylor.mc.athenaeum.module.ModuleManager;
@@ -31,7 +32,10 @@ public class ModArtisanWorkstumps {
   public ModArtisanWorkstumps() {
 
     this.moduleManager = new ModuleManager(MOD_ID);
-    this.moduleManager.registerModules(ModuleWorkstumps.class);
+    this.moduleManager.registerModules(
+        ModuleCore.class,
+        ModuleWorkstumps.class
+    );
   }
 
   @Mod.EventHandler

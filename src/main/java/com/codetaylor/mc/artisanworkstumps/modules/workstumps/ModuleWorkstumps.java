@@ -5,11 +5,8 @@ import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstu
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstumpMage;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.event.RecipeRepeat;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.init.BlockInitializer;
-import com.codetaylor.mc.artisanworkstumps.modules.workstumps.init.PacketInitializer;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
-import com.codetaylor.mc.athenaeum.interaction.event.InteractionMouseScrollEventHandler;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
-import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
 import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.network.tile.ITileDataService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
@@ -38,8 +35,6 @@ public class ModuleWorkstumps
 
     PACKET_SERVICE = this.enableNetwork();
     TILE_DATA_SERVICE = this.enableNetworkTileDataService(PACKET_SERVICE);
-
-    MinecraftForge.EVENT_BUS.register(new InteractionMouseScrollEventHandler(PACKET_SERVICE));
   }
 
   @Override
@@ -55,12 +50,6 @@ public class ModuleWorkstumps
   // ---------------------------------------------------------------------------
   // - Registration
   // ---------------------------------------------------------------------------
-
-  @Override
-  public void onNetworkRegister(IPacketRegistry registry) {
-
-    PacketInitializer.register(registry);
-  }
 
   @Override
   public void onRegister(Registry registry) {
