@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworkstumps.modules.tanks.block;
 
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanksConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
+import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.athenaeum.interaction.spi.IBlockInteractable;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
 import com.codetaylor.mc.athenaeum.spi.BlockPartialBase;
@@ -165,6 +166,23 @@ public class BlockFluidStump
   // ---------------------------------------------------------------------------
   // - Placement
   // ---------------------------------------------------------------------------
+
+  @Override
+  public boolean canPlaceBlockOnSide(@Nonnull World world, @Nonnull BlockPos pos, EnumFacing side) {
+
+    if (side == EnumFacing.UP || side == EnumFacing.DOWN) {
+      return false;
+    }
+
+    TileEntity tileEntity = world.getTileEntity(pos.offset(side.getOpposite()));
+
+    if (!(tileEntity instanceof TileWorkstump)) {
+      return false;
+    }
+
+    return !((TileWorkstump) tileEntity).hasFluidStump()
+        && super.canPlaceBlockOnSide(world, pos, side);
+  }
 
   @ParametersAreNonnullByDefault
   @Nonnull
