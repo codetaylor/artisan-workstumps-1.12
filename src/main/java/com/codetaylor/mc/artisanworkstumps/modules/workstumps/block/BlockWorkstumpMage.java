@@ -35,7 +35,7 @@ public class BlockWorkstumpMage
   @Override
   protected BlockStateContainer createBlockState() {
 
-    return new BlockStateContainer(this, Properties.FACING_HORIZONTAL, ACTIVE);
+    return new BlockStateContainer(this, Properties.FACING_HORIZONTAL, ACTIVE, CONDITION);
   }
 
   @Override
@@ -53,6 +53,8 @@ public class BlockWorkstumpMage
   @Override
   public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
 
+    state = super.getActualState(state, world, pos);
+
     TileEntity tileEntity = world.getTileEntity(pos);
 
     if (tileEntity instanceof TileWorkstump
@@ -60,7 +62,7 @@ public class BlockWorkstumpMage
       return state.withProperty(ACTIVE, !((TileWorkstump) tileEntity).getStackHandlerInput().isEmpty());
     }
 
-    return super.getActualState(state, world, pos);
+    return state;
   }
 
   @SideOnly(Side.CLIENT)

@@ -20,6 +20,13 @@
       "west": {
         "y": 270
       }
+    },
+    "condition": {
+      "0": {},
+      "1": {"textures": {"crafting": "artisanworkstumps:blocks/workstump_top_damaged_0"}},
+      "2": {"textures": {"crafting": "artisanworkstumps:blocks/workstump_top_damaged_1"}},
+      "3": {"textures": {"crafting": "artisanworkstumps:blocks/workstump_top_damaged_2"}},
+      "4": {"textures": {"crafting": "artisanworkstumps:blocks/workstump_top_damaged_3"}}
     }
   }
 }

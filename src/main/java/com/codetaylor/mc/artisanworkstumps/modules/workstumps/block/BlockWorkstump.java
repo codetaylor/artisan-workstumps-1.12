@@ -8,6 +8,7 @@ import com.codetaylor.mc.athenaeum.spi.BlockPartialBase;
 import com.codetaylor.mc.athenaeum.util.Properties;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -47,6 +48,8 @@ public class BlockWorkstump
   public static final String NAME_DESIGNER = "workstump_designer";
   public static final String NAME_TANNER = "workstump_tanner";
   public static final String NAME_POTTER = "workstump_potter";
+
+  public static final PropertyInteger CONDITION = PropertyInteger.create("condition", 0, 4);
 
   private final String tableName;
 
@@ -175,7 +178,7 @@ public class BlockWorkstump
   @Override
   protected BlockStateContainer createBlockState() {
 
-    return new BlockStateContainer(this, Properties.FACING_HORIZONTAL);
+    return new BlockStateContainer(this, Properties.FACING_HORIZONTAL, CONDITION);
   }
 
   @SuppressWarnings("deprecation")
@@ -204,6 +207,39 @@ public class BlockWorkstump
         || side == EnumFacing.EAST
         || side == EnumFacing.WEST
         || side == EnumFacing.SOUTH);
+  }
+
+  @SuppressWarnings("deprecation")
+  @Nonnull
+  @Override
+  public IBlockState getActualState(@Nonnull IBlockState state, IBlockAccess world, BlockPos pos) {
+
+    TileEntity tileEntity = world.getTileEntity(pos);
+
+    if (tileEntity instanceof TileWorkstump) {
+      TileWorkstump tileWorkstump = (TileWorkstump) tileEntity;
+      int durability = tileWorkstump.getDurability();
+      int remainingDurability = tileWorkstump.getRemainingDurability();
+      float durabilityPercentage = remainingDurability / (float) durability;
+
+      if (durabilityPercentage < 0.05) {
+        state = state.withProperty(CONDITION, 4);
+
+      } else if (durabilityPercentage < 0.25) {
+        state = state.withProperty(CONDITION, 3);
+
+      } else if (durabilityPercentage < 0.5) {
+        state = state.withProperty(CONDITION, 2);
+
+      } else if (durabilityPercentage < 0.75) {
+        state = state.withProperty(CONDITION, 1);
+
+      } else {
+        state = state.withProperty(CONDITION, 0);
+      }
+    }
+
+    return state;
   }
 
 }

@@ -252,7 +252,7 @@ public class TileWorkstump
     return ModuleWorkstumpsConfig.WORKSTUMP.USES_DURABILITY;
   }
 
-  private int getDurability() {
+  public int getDurability() {
 
     return ModuleWorkstumpsConfig.WORKSTUMP.DURABILITY;
   }
@@ -370,11 +370,15 @@ public class TileWorkstump
     return Block.getStateId(state);
   }
 
+  // ---------------------------------------------------------------------------
+  // - Network
+  // ---------------------------------------------------------------------------
+
   @Override
   public void onTileDataUpdate() {
 
-    if ("mage".equals(this.tableName)
-        && this.inputTileDataItemStackHandler.isDirty()) {
+    if (("mage".equals(this.tableName) && this.inputTileDataItemStackHandler.isDirty())
+        || this.remainingDurability.isDirty()) {
       BlockHelper.notifyBlockUpdate(this.world, this.pos);
     }
   }
