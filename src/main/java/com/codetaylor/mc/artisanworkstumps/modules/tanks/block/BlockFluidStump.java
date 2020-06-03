@@ -28,6 +28,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -121,6 +122,23 @@ public class BlockFluidStump
 
     if (!world.isRemote) {
       world.setBlockToAir(pos);
+    }
+  }
+
+  @Override
+  public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+
+    IBlockState blockState = world.getBlockState(pos);
+
+    if (blockState.getBlock() instanceof BlockFluidStump) {
+      EnumFacing facing = blockState.getValue(Properties.FACING_HORIZONTAL);
+
+      if (world.isAirBlock(pos.offset(facing))) {
+
+        if (world instanceof WorldServer) {
+          ((WorldServer) world).destroyBlock(pos, true);
+        }
+      }
     }
   }
 
