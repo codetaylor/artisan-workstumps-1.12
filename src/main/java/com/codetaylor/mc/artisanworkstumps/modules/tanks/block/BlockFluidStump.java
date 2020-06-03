@@ -32,6 +32,7 @@ import net.minecraftforge.fluids.FluidTank;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 public class BlockFluidStump
@@ -161,10 +162,23 @@ public class BlockFluidStump
   // - Placement
   // ---------------------------------------------------------------------------
 
+  @ParametersAreNonnullByDefault
+  @Nonnull
   @Override
-  public boolean isSideSolid(IBlockState base_state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, EnumFacing side) {
+  public IBlockState getStateForPlacement(
+      World world,
+      BlockPos pos,
+      EnumFacing facing,
+      float hitX,
+      float hitY,
+      float hitZ,
+      int meta,
+      EntityLivingBase placer,
+      EnumHand hand
+  ) {
 
-    return true;
+    EnumFacing opposite = placer.getHorizontalFacing().getOpposite();
+    return this.getDefaultState().withProperty(Properties.FACING_HORIZONTAL, opposite);
   }
 
   // ---------------------------------------------------------------------------
