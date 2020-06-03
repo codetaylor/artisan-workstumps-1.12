@@ -20,9 +20,9 @@ public class ShelfInteraction
         new ItemStackHandler[]{stackHandler},
         slot,
         new EnumFacing[]{EnumFacing.UP},
-        new AxisAlignedBB(x * ONE_THIRD, 0, 0, x * ONE_THIRD + ONE_THIRD, 5f / 16f, ONE_THIRD),
+        new AxisAlignedBB(x * ONE_THIRD, 0, 0, x * ONE_THIRD + ONE_THIRD, 3f / 16f, ONE_THIRD),
         new Transform(
-            Transform.translate(x * (ONE_THIRD - 0.025) + ONE_SIXTH + 0.025, 5f / 16f, ONE_SIXTH + 0.025),
+            Transform.translate(x * (ONE_THIRD - 0.025) + ONE_SIXTH + 0.025, 3f / 16f, ONE_SIXTH + 0.025),
             Transform.rotate(new Quaternion[]{
                 Transform.rotate(0, 1, 0, 180),
                 Transform.rotate(1, 0, 0, -90)
