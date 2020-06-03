@@ -56,7 +56,7 @@ public class TESRFluidStump
       int k = i & 0xFFFF;
 
       float percent = fluidTank.getFluidAmount() / (float) fluidTank.getCapacity();
-      float level = (PX * 6) * percent + PX;
+      float level = (PX * 6) * percent + PX + PX * 8;
 
       IBlockState blockState = world.getBlockState(tile.getPos());
 
@@ -65,17 +65,18 @@ public class TESRFluidStump
       }
 
       switch (blockState.getValue(Properties.FACING_HORIZONTAL)) {
+        // These are rotated because the block model is rotated in the block state
         case NORTH:
-          buffer.setTranslation(x + PX * 6, y, z + PX * 4);
+          buffer.setTranslation(x + PX * 4, y, z + PX * 2);
           break;
         case EAST:
-          buffer.setTranslation(x + PX * 4, y, z + PX * 6);
+          buffer.setTranslation(x + PX * 6, y, z + PX * 4);
           break;
         case SOUTH:
-          buffer.setTranslation(x + PX * 2, y, z + PX * 4);
+          buffer.setTranslation(x + PX * 4, y, z + PX * 6);
           break;
         case WEST:
-          buffer.setTranslation(x + PX * 4, y, z + PX * 2);
+          buffer.setTranslation(x + PX * 2, y, z + PX * 4);
           break;
       }
 
