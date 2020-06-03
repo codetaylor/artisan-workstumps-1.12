@@ -5,12 +5,14 @@ import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
 import com.codetaylor.mc.athenaeum.interaction.spi.IBlockInteractable;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
 import com.codetaylor.mc.athenaeum.spi.BlockPartialBase;
+import com.codetaylor.mc.athenaeum.util.AABBHelper;
 import com.codetaylor.mc.athenaeum.util.Properties;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,10 +21,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
@@ -40,6 +39,11 @@ public class BlockFluidStump
     implements IBlockInteractable {
 
   public static final String NAME = "fluidstump";
+
+  private static final AxisAlignedBB AABB_NORTH = AABBHelper.create(4, 0, 2, 16, 8, 14);
+  private static final AxisAlignedBB AABB_EAST = AABBHelper.create(2, 0, 4, 14, 8, 16);
+  private static final AxisAlignedBB AABB_SOUTH = AABBHelper.create(0, 0, 2, 12, 8, 14);
+  private static final AxisAlignedBB AABB_WEST = AABBHelper.create(2, 0, 0, 14, 8, 12);
 
   public BlockFluidStump() {
 
@@ -192,6 +196,36 @@ public class BlockFluidStump
     return BlockRenderLayer.CUTOUT;
   }
 
+  @Override
+  public boolean isSideSolid(IBlockState base_state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, EnumFacing side) {
+
+    return false;
+  }
+
+  // ---------------------------------------------------------------------------
+  // - Collision
+  // ---------------------------------------------------------------------------
+
+  @Nonnull
+  @Override
+  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+
+    EnumFacing facing = state.getValue(Properties.FACING_HORIZONTAL);
+
+    switch (facing) {
+      case NORTH:
+        return AABB_NORTH;
+      case EAST:
+        return AABB_EAST;
+      case SOUTH:
+        return AABB_SOUTH;
+      case WEST:
+        return AABB_WEST;
+    }
+
+    return super.getBoundingBox(state, source, pos);
+  }
+
   // ---------------------------------------------------------------------------
   // - Tooltip
   // ---------------------------------------------------------------------------
@@ -270,5 +304,4 @@ public class BlockFluidStump
 
     return state.getValue(Properties.FACING_HORIZONTAL).getIndex() - 2;
   }
-
 }
