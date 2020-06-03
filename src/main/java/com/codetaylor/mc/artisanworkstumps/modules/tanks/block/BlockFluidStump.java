@@ -41,10 +41,10 @@ public class BlockFluidStump
 
   public static final String NAME = "fluidstump";
 
-  private static final AxisAlignedBB AABB_NORTH = AABBHelper.create(4, 0, 2, 16, 8, 14);
-  private static final AxisAlignedBB AABB_EAST = AABBHelper.create(2, 0, 4, 14, 8, 16);
-  private static final AxisAlignedBB AABB_SOUTH = AABBHelper.create(0, 0, 2, 12, 8, 14);
-  private static final AxisAlignedBB AABB_WEST = AABBHelper.create(2, 0, 0, 14, 8, 12);
+  private static final AxisAlignedBB AABB_NORTH = AABBHelper.create(4, 8, 2, 16, 16, 14);
+  private static final AxisAlignedBB AABB_EAST = AABBHelper.create(2, 8, 4, 14, 16, 16);
+  private static final AxisAlignedBB AABB_SOUTH = AABBHelper.create(0, 8, 2, 12, 16, 14);
+  private static final AxisAlignedBB AABB_WEST = AABBHelper.create(2, 8, 0, 14, 16, 12);
 
   public BlockFluidStump() {
 
@@ -199,7 +199,7 @@ public class BlockFluidStump
       EnumHand hand
   ) {
 
-    EnumFacing opposite = placer.getHorizontalFacing().getOpposite();
+    EnumFacing opposite = facing.getOpposite();
     return this.getDefaultState().withProperty(Properties.FACING_HORIZONTAL, opposite);
   }
 
@@ -231,14 +231,15 @@ public class BlockFluidStump
     EnumFacing facing = state.getValue(Properties.FACING_HORIZONTAL);
 
     switch (facing) {
+      // These are rotated because the block model is rotated in the blockstate file.
       case NORTH:
-        return AABB_NORTH;
-      case EAST:
-        return AABB_EAST;
-      case SOUTH:
-        return AABB_SOUTH;
-      case WEST:
         return AABB_WEST;
+      case EAST:
+        return AABB_NORTH;
+      case SOUTH:
+        return AABB_EAST;
+      case WEST:
+        return AABB_SOUTH;
     }
 
     return super.getBoundingBox(state, source, pos);

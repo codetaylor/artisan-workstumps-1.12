@@ -1,8 +1,9 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.workstump;
 
+import com.codetaylor.mc.artisanworkstumps.modules.core.network.SCPacketParticleProgress;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
-import com.codetaylor.mc.artisanworkstumps.modules.core.network.SCPacketParticleProgress;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
@@ -20,11 +21,16 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -263,7 +269,7 @@ public class InteractionTool
         tile.setRetainedRecipeName(recipe.getName());
 
         List<ItemStack> output = new ArrayList<>();
-        recipe.doCraft(this.getCraftingContext(tile, player), output);
+        recipe.doCraft(this.createCraftingContext(tile, player, recipe.getFluidIngredient()), output);
 
         for (ItemStack result : output) {
           StackHelper.spawnStackOnTop(world, result, tile.getPos(), 0.75);
@@ -292,9 +298,33 @@ public class InteractionTool
     }
   }
 
-  private ICraftingContext getCraftingContext(TileWorkstump tile, EntityPlayer player) {
+  private ICraftingContext createCraftingContext(TileWorkstump tile, EntityPlayer player, @Nullable FluidStack fluidIngredient) {
 
-    return FactoryCraftingContext.createContext(tile, player, null);
+    if (fluidIngredient != null) {
+
+      for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
+        BlockPos offset = tile.getPos().offset(EnumFacing.HORIZONTALS[i]);
+        TileEntity tileEntity = tile.getWorld().getTileEntity(offset);
+
+        if (!(tileEntity instanceof TileFluidStump)) {
+          continue;
+        }
+
+        IFluidHandler capability = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.HORIZONTALS[i].getOpposite());
+
+        if (capability == null) {
+          continue;
+        }
+
+        FluidStack drained = capability.drain(fluidIngredient, false);
+
+        if (drained != null && drained.amount == fluidIngredient.amount) {
+          return FactoryCraftingContext.create(tile, player, capability);
+        }
+      }
+    }
+
+    return FactoryCraftingContext.create(tile, player, null);
   }
 
   private void doRecipeProgressClient(TileWorkstump tile, World world, float hitX, float hitY, float hitZ) {

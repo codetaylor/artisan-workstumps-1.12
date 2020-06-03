@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile;
 
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
@@ -28,9 +29,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
@@ -117,11 +121,20 @@ public class TileWorkstump
   // - Accessors
   // ---------------------------------------------------------------------------
 
-  @Nullable
-  public IFluidHandler getTank() {
+  public boolean hasFluidStump() {
 
-    // Stub until we implement tanks.
-    return null;
+    for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
+      BlockPos offset = this.getPos().offset(EnumFacing.HORIZONTALS[i]);
+      TileEntity tileEntity = this.world.getTileEntity(offset);
+
+      if (!(tileEntity instanceof TileFluidStump)) {
+        continue;
+      }
+
+      return true;
+    }
+
+    return false;
   }
 
   public String getTableName() {
@@ -187,13 +200,37 @@ public class TileWorkstump
 
     RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(this.tableName);
 
+    FluidStack fluidStack = null;
+
+    for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
+      BlockPos offset = this.getPos().offset(EnumFacing.HORIZONTALS[i]);
+      TileEntity tileEntity = this.world.getTileEntity(offset);
+
+      if (!(tileEntity instanceof TileFluidStump)) {
+        continue;
+      }
+
+      IFluidHandler capability = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.HORIZONTALS[i].getOpposite());
+
+      if (capability == null) {
+        continue;
+      }
+
+      FluidStack drained = capability.drain(Integer.MAX_VALUE, false);
+
+      if (drained != null && drained.amount > 0) {
+        fluidStack = drained;
+        break;
+      }
+    }
+
     return registry.findRecipe(
         playerExperience,
         playerLevels,
         isPlayerCreative,
         new ItemStack[]{player.getHeldItemMainhand()},
         this.stackHandlerInput,
-        null,
+        fluidStack,
         ISecondaryIngredientMatcher.FALSE,
         EnumTier.WORKTABLE,
         Collections.emptyMap()

@@ -31,10 +31,10 @@ public final class FactoryCraftingContext {
     FLUID_HANDLER = new FluidHandler();
   }
 
-  public static ICraftingContext createContext(
+  public static ICraftingContext create(
       final TileWorkstump tile,
       final EntityPlayer player,
-      @Nullable final IItemHandlerModifiable secondaryIngredientHandler
+      @Nullable IFluidHandler fluidHandler
   ) {
 
     ItemStack heldItem = player.getHeldItemMainhand();
@@ -77,14 +77,13 @@ public final class FactoryCraftingContext {
       @Override
       public IItemHandlerModifiable getSecondaryIngredientHandler() {
 
-        return secondaryIngredientHandler;
+        return null;
       }
 
       @Override
       public IFluidHandler getFluidHandler() {
 
-        IFluidHandler tank = tile.getTank();
-        return (tank == null) ? FLUID_HANDLER : tank;
+        return (fluidHandler == null) ? FLUID_HANDLER : fluidHandler;
       }
 
       @Nullable
