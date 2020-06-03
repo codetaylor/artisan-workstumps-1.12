@@ -80,9 +80,7 @@ public class BlockWorkstump
   @Override
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-    ItemStack heldItem = player.getHeldItem(hand);
-
-    if (heldItem.getItem() == Item.getItemFromBlock(ModuleTanks.Blocks.FLUID_STUMP)) {
+    if (facing != EnumFacing.UP && player.getHeldItem(hand).getItem() == Item.getItemFromBlock(ModuleTanks.Blocks.FLUID_STUMP)) {
       return false;
     }
 
