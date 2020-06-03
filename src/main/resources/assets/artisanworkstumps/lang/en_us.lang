@@ -1,3 +1,7 @@
+# ------------------------------------------------------------------------------
+# - Workstumps Module
+# ------------------------------------------------------------------------------
+
 tile.artisanworkstumps.workstump_tailor.name=Tailor's Workstump
 tile.artisanworkstumps.workstump_carpenter.name=Carpenter's Workstump
 tile.artisanworkstumps.workstump_mason.name=Mason's Workstump
@@ -13,3 +17,16 @@ tile.artisanworkstumps.workstump_chef.name=Chef's Workstump
 tile.artisanworkstumps.workstump_designer.name=Designer's Workstump
 tile.artisanworkstumps.workstump_tanner.name=Tanner's Workstump
 tile.artisanworkstumps.workstump_potter.name=Potter's Workstump
+
+# ------------------------------------------------------------------------------
+# - Tanks Module
+# ------------------------------------------------------------------------------
+
+tile.artisanworkstumps.fluidstump.name=Artisan's Fluid Stump
+
+gui.pyrotech.tooltip.contents.retain.true=Keeps contents when broken.
+gui.pyrotech.tooltip.contents.retain.false=Destroys contents when broken.
+gui.pyrotech.tooltip.fluid=%s: %d / %d
+gui.pyrotech.tooltip.fluid.capacity=Capacity: %d mB
+gui.pyrotech.tooltip.hot.fluids.true=Can hold hot fluids.
+gui.pyrotech.tooltip.hot.fluids.false=Breaks with hot fluids.
