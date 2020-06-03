@@ -8,13 +8,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class ShelfInteraction
+public class InteractionShelf
     extends InteractionItemStack<TileWorkstump> {
 
   private static final double ONE_THIRD = 1.0 / 3.0;
   private static final double ONE_SIXTH = 1.0 / 6.0;
 
-  public ShelfInteraction(ItemStackHandler stackHandler, int slot, double x) {
+  public InteractionShelf(ItemStackHandler stackHandler, int slot, double x) {
 
     super(
         new ItemStackHandler[]{stackHandler},

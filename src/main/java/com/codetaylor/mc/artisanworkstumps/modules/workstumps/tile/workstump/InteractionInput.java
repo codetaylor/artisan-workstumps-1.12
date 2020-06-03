@@ -13,14 +13,14 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class InputInteraction
+public class InteractionInput
     extends InteractionItemStack<TileWorkstump> {
 
   private static final double ONE_THIRD = 1.0 / 3.0;
   private static final double ONE_SIXTH = 1.0 / 6.0;
   private final Vec3d textOffset = new Vec3d(0, 0.25, 0);
 
-  public InputInteraction(ItemStackHandler stackHandler, int slot, double x, double z) {
+  public InteractionInput(ItemStackHandler stackHandler, int slot, double x, double z) {
 
     super(
         new ItemStackHandler[]{stackHandler},

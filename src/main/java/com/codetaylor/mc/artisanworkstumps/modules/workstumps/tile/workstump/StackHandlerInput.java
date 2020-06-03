@@ -4,7 +4,7 @@ import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingMatrixSt
 import com.codetaylor.mc.athenaeum.inventory.ObservableStackHandler;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileDataItemStackHandler;
 
-public class InputStackHandler
+public class StackHandlerInput
     extends ObservableStackHandler
     implements ITileDataItemStackHandler,
     ICraftingMatrixStackHandler {
@@ -13,7 +13,7 @@ public class InputStackHandler
   private final int height;
   private final int maxStackSize;
 
-  public InputStackHandler(int width, int height, int maxStackSize) {
+  public StackHandlerInput(int width, int height, int maxStackSize) {
 
     super(width * height);
     this.width = width;

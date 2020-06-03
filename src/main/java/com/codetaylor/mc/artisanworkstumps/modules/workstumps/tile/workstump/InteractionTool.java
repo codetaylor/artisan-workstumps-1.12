@@ -122,11 +122,11 @@ public class InteractionTool
 
   private void doRecipeClear(TileWorkstump tile, World world, EntityPlayer player) {
 
-    int slots = tile.getInputStackHandler().getSlots();
+    int slots = tile.getStackHandlerInput().getSlots();
 
     for (int i = 0; i < slots; i++) {
-      int slotLimit = tile.getInputStackHandler().getSlotLimit(i);
-      ItemStack itemStack = tile.getInputStackHandler().extractItem(i, slotLimit, false);
+      int slotLimit = tile.getStackHandlerInput().getSlotLimit(i);
+      ItemStack itemStack = tile.getStackHandlerInput().extractItem(i, slotLimit, false);
       StackHelper.addToInventoryOrSpawn(world, player, itemStack, tile.getPos(), 1, false, true);
     }
   }
@@ -151,7 +151,7 @@ public class InteractionTool
     }
 
     List<IArtisanIngredient> ingredientList = recipe.getIngredientList();
-    ItemStackHandler inputStackHandler = tile.getInputStackHandler();
+    ItemStackHandler inputStackHandler = tile.getStackHandlerInput();
     List<ItemStack> itemStackList = new ArrayList<>(ingredientList.size());
 
     // Gather ingredients from the player's inventory and hotbar.
@@ -294,7 +294,7 @@ public class InteractionTool
 
   private ICraftingContext getCraftingContext(TileWorkstump tile, EntityPlayer player) {
 
-    return CraftingContextFactory.createContext(tile, player, null);
+    return FactoryCraftingContext.createContext(tile, player, null);
   }
 
   private void doRecipeProgressClient(TileWorkstump tile, World world, float hitX, float hitY, float hitZ) {

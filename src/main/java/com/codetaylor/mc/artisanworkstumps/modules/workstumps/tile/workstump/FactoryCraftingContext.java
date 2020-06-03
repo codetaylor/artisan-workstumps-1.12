@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public final class CraftingContextFactory {
+public final class FactoryCraftingContext {
 
   private static final SecondaryOutputHandler SECONDARY_OUTPUT_HANDLER;
   private static final FluidHandler FLUID_HANDLER;
@@ -58,7 +58,7 @@ public final class CraftingContextFactory {
       @Override
       public ICraftingMatrixStackHandler getCraftingMatrixHandler() {
 
-        return tile.getInputStackHandler();
+        return tile.getStackHandlerInput();
       }
 
       @Override
@@ -116,7 +116,7 @@ public final class CraftingContextFactory {
 
   }
 
-  private CraftingContextFactory() {
+  private FactoryCraftingContext() {
     //
   }
 

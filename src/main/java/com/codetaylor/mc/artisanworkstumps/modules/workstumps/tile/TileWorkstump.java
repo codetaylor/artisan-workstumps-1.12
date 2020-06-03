@@ -43,9 +43,9 @@ public class TileWorkstump
     extends TileEntityDataBase
     implements ITileInteractable {
 
-  private TileDataItemStackHandler<InputStackHandler> inputTileDataItemStackHandler;
-  private InputStackHandler inputStackHandler;
-  private ShelfStackHandler shelfStackHandler;
+  private TileDataItemStackHandler<StackHandlerInput> inputTileDataItemStackHandler;
+  private StackHandlerInput stackHandlerInput;
+  private StackHandlerShelf stackHandlerShelf;
   private TileDataInteger remainingDurability;
 
   private TileDataFloat recipeProgress;
@@ -61,14 +61,14 @@ public class TileWorkstump
 
     // --- Initialize ---
 
-    this.inputStackHandler = new InputStackHandler(3, 3, this.getGridMaxStackSize());
-    this.inputStackHandler.addObserver((handler, slot) -> {
+    this.stackHandlerInput = new StackHandlerInput(3, 3, this.getGridMaxStackSize());
+    this.stackHandlerInput.addObserver((handler, slot) -> {
       this.recipeProgress.set(0);
       this.markDirty();
     });
 
-    this.shelfStackHandler = new ShelfStackHandler(this.getShelfMaxStackSize());
-    this.shelfStackHandler.addObserver((handler, slot) -> this.markDirty());
+    this.stackHandlerShelf = new StackHandlerShelf(this.getShelfMaxStackSize());
+    this.stackHandlerShelf.addObserver((handler, slot) -> this.markDirty());
 
     this.recipeProgress = new TileDataFloat(0);
 
@@ -76,11 +76,11 @@ public class TileWorkstump
 
     // --- Network ---
 
-    this.inputTileDataItemStackHandler = new TileDataItemStackHandler<>(this.inputStackHandler);
+    this.inputTileDataItemStackHandler = new TileDataItemStackHandler<>(this.stackHandlerInput);
 
     this.registerTileDataForNetwork(new ITileData[]{
         this.inputTileDataItemStackHandler,
-        new TileDataItemStackHandler<>(this.shelfStackHandler),
+        new TileDataItemStackHandler<>(this.stackHandlerShelf),
         this.recipeProgress,
         this.remainingDurability
     });
@@ -96,12 +96,12 @@ public class TileWorkstump
     for (int i = 0; i < 9; i++) {
       int x = 2 - (i % 3);
       int z = 2 - (i / 3);
-      interactionList.add(new InputInteraction(this.inputStackHandler, i, x, z));
+      interactionList.add(new InteractionInput(this.stackHandlerInput, i, x, z));
     }
 
     for (int i = 0; i < 3; i++) {
       int x = i % 3;
-      interactionList.add(new ShelfInteraction(this.shelfStackHandler, i, x));
+      interactionList.add(new InteractionShelf(this.stackHandlerShelf, i, x));
     }
 
     this.interactions = interactionList.toArray(new IInteraction[0]);
@@ -174,9 +174,9 @@ public class TileWorkstump
     return this.remainingDurability.add(remainingDurability);
   }
 
-  public InputStackHandler getInputStackHandler() {
+  public StackHandlerInput getStackHandlerInput() {
 
-    return this.inputStackHandler;
+    return this.stackHandlerInput;
   }
 
   public IArtisanRecipe getWorkstumpRecipe(EntityPlayer player) {
@@ -192,7 +192,7 @@ public class TileWorkstump
         playerLevels,
         isPlayerCreative,
         new ItemStack[]{player.getHeldItemMainhand()},
-        this.inputStackHandler,
+        this.stackHandlerInput,
         null,
         ISecondaryIngredientMatcher.FALSE,
         EnumTier.WORKTABLE,
@@ -246,8 +246,8 @@ public class TileWorkstump
 
   public void dropContents() {
 
-    StackHelper.spawnStackHandlerContentsOnTop(this.world, this.inputStackHandler, this.pos);
-    StackHelper.spawnStackHandlerContentsOnTop(this.world, this.shelfStackHandler, this.pos);
+    StackHelper.spawnStackHandlerContentsOnTop(this.world, this.stackHandlerInput, this.pos);
+    StackHelper.spawnStackHandlerContentsOnTop(this.world, this.stackHandlerShelf, this.pos);
   }
 
   // ---------------------------------------------------------------------------
@@ -266,8 +266,8 @@ public class TileWorkstump
     super.readFromNBT(compound);
 
     this.tableName = compound.getString("tableName");
-    this.inputStackHandler.deserializeNBT(compound.getCompoundTag("inputStackHandler"));
-    this.shelfStackHandler.deserializeNBT(compound.getCompoundTag("shelfStackHandler"));
+    this.stackHandlerInput.deserializeNBT(compound.getCompoundTag("inputStackHandler"));
+    this.stackHandlerShelf.deserializeNBT(compound.getCompoundTag("shelfStackHandler"));
     this.remainingDurability.set(compound.getInteger("remainingDurability"));
 
     if (compound.hasKey("retainedRecipe")) {
@@ -282,8 +282,8 @@ public class TileWorkstump
     super.writeToNBT(compound);
 
     compound.setString("tableName", this.tableName);
-    compound.setTag("inputStackHandler", this.inputStackHandler.serializeNBT());
-    compound.setTag("shelfStackHandler", this.shelfStackHandler.serializeNBT());
+    compound.setTag("inputStackHandler", this.stackHandlerInput.serializeNBT());
+    compound.setTag("shelfStackHandler", this.stackHandlerShelf.serializeNBT());
     compound.setInteger("remainingDurability", this.remainingDurability.get());
 
     if (this.retainedRecipeName != null) {

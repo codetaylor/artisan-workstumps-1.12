@@ -57,7 +57,7 @@ public class BlockWorkstumpMage
 
     if (tileEntity instanceof TileWorkstump
         && ((TileWorkstump) tileEntity).getTableName().equals("mage")) {
-      return state.withProperty(ACTIVE, !((TileWorkstump) tileEntity).getInputStackHandler().isEmpty());
+      return state.withProperty(ACTIVE, !((TileWorkstump) tileEntity).getStackHandlerInput().isEmpty());
     }
 
     return super.getActualState(state, world, pos);
@@ -72,7 +72,7 @@ public class BlockWorkstumpMage
     if (tileEntity instanceof TileWorkstump) {
       TileWorkstump workstump = (TileWorkstump) tileEntity;
 
-      if (!workstump.getInputStackHandler().isEmpty()) {
+      if (!workstump.getStackHandlerInput().isEmpty()) {
         tileEntity.getWorld().spawnParticle(
             EnumParticleTypes.PORTAL,
             tileEntity.getPos().getX() + 0.5 + rand.nextFloat() * 0.5 - 0.25,
