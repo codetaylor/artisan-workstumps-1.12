@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworkstumps.modules.tanks.block;
 
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanksConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
+import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.athenaeum.interaction.spi.IBlockInteractable;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
@@ -174,14 +175,30 @@ public class BlockFluidStump
       return false;
     }
 
-    TileEntity tileEntity = world.getTileEntity(pos.offset(side.getOpposite()));
+    BlockPos offset = pos.offset(side.getOpposite());
+    TileEntity tileEntity = world.getTileEntity(offset);
 
     if (!(tileEntity instanceof TileWorkstump)) {
       return false;
     }
 
-    return !((TileWorkstump) tileEntity).hasFluidStump()
-        && super.canPlaceBlockOnSide(world, pos, side);
+    if (((TileWorkstump) tileEntity).hasFluidStump()) {
+      return false;
+    }
+
+    IBlockState blockState = world.getBlockState(offset);
+
+    if (!(blockState.getBlock() instanceof BlockWorkstump)) {
+      return false;
+    }
+
+    EnumFacing facing = blockState.getValue(Properties.FACING_HORIZONTAL);
+
+    if (facing == side) {
+      return false;
+    }
+
+    return super.canPlaceBlockOnSide(world, pos, side);
   }
 
   @ParametersAreNonnullByDefault
