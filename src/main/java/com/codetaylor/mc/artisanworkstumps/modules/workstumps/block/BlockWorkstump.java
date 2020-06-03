@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.block;
 
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanks;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.athenaeum.interaction.spi.IBlockInteractable;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
@@ -11,6 +12,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -76,9 +78,15 @@ public class BlockWorkstump
   }
 
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-    return this.interact(IInteraction.EnumType.MouseClick, world, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+    ItemStack heldItem = player.getHeldItem(hand);
+
+    if (heldItem.getItem() == Item.getItemFromBlock(ModuleTanks.Blocks.FLUID_STUMP)) {
+      return false;
+    }
+
+    return this.interact(IInteraction.EnumType.MouseClick, world, pos, state, player, hand, facing, hitX, hitY, hitZ);
   }
 
   @Override
