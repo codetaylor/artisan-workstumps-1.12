@@ -51,7 +51,8 @@ public class InteractionTool
     ItemStack heldItemStack = player.getHeldItem(hand);
     boolean sneaking = player.isSneaking();
 
-    // Allow an empty hand if clearing, otherwise test.
+    // Allow an empty hand if clearing, otherwise test that the recipe doesn't
+    // require tools.
     if (sneaking
         && heldItemStack.isEmpty()
         && ModuleWorkstumpsConfig.WORKSTUMP.ALLOW_RECIPE_CLEAR) {
@@ -94,6 +95,14 @@ public class InteractionTool
     // We apply our own item damage on recipe completion.
   }
 
+  /**
+   * Determine the intent and perform one of three actions:
+   * - clear the grid
+   * - repeat the last recipe
+   * - increment recipe progress
+   *
+   * @return true
+   */
   @Override
   protected boolean doInteraction(TileWorkstump tile, World world, BlockPos hitPos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing hitSide, float hitX, float hitY, float hitZ) {
 
@@ -102,20 +111,13 @@ public class InteractionTool
     if (player.isSneaking()) {
 
       if (heldItem.isEmpty()) {
-        // The heldItem will only be empty if the recipe clear feature is
-        // enabled in the config and the player is sneaking. This is checked
-        // in the allowInteraction method.
-
-        // Remove all stuffs from crafting grid
         this.doRecipeClear(tile, world, player);
 
       } else if (ModuleWorkstumpsConfig.WORKSTUMP.ALLOW_RECIPE_REPEAT) {
-        // Repeat the last recipe
         this.doRecipeRepeat(tile, player, heldItem);
       }
 
     } else {
-      // Use the tool to advance the recipe progress.
       this.doRecipeProgress(tile, world, hitPos, player, hitX, hitY, hitZ);
     }
 

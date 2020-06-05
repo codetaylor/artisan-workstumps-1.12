@@ -225,14 +225,14 @@ public class TileWorkstump
 
     RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(this.tableName);
 
-    FluidStack fluidStack = null;
-    IFluidHandler capability = this.getFluidHandler();
+    FluidStack simulatedFluidStackAvailable = null;
+    IFluidHandler fluidHandler = this.getFluidHandler();
 
-    if (capability != null) {
-      FluidStack drained = capability.drain(Integer.MAX_VALUE, false);
+    if (fluidHandler != null) {
+      FluidStack simulatedFluidStackDrained = fluidHandler.drain(Integer.MAX_VALUE, false);
 
-      if (drained != null && drained.amount > 0) {
-        fluidStack = drained;
+      if (simulatedFluidStackDrained != null && simulatedFluidStackDrained.amount > 0) {
+        simulatedFluidStackAvailable = simulatedFluidStackDrained;
       }
     }
 
@@ -242,7 +242,7 @@ public class TileWorkstump
         isPlayerCreative,
         new ItemStack[]{player.getHeldItemMainhand()},
         this.stackHandlerInput,
-        fluidStack,
+        simulatedFluidStackAvailable,
         ISecondaryIngredientMatcher.FALSE,
         EnumTier.WORKTABLE,
         Collections.emptyMap()
