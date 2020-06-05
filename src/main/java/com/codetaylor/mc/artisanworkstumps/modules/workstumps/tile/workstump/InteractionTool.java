@@ -16,7 +16,6 @@ import com.codetaylor.mc.athenaeum.util.RandomHelper;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -227,7 +226,7 @@ public class InteractionTool
     int toolDamage = ModuleWorkstumpsConfig.WORKSTUMP.RECIPE_REPEAT_TOOL_DAMAGE;
 
     if (!tile.getWorld().isRemote && toolDamage > 0) {
-      heldItem.attemptDamageItem(toolDamage, RandomHelper.random(), (EntityPlayerMP) player);
+      ArtisanToolHandlers.get(heldItem).applyDamage(tile.getWorld(), heldItem, toolDamage, player, false);
     }
   }
 
