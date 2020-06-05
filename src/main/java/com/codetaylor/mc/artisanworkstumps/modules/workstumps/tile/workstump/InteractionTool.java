@@ -9,7 +9,6 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
-import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.athenaeum.interaction.api.InteractionBounds;
 import com.codetaylor.mc.athenaeum.interaction.spi.InteractionUseItemBase;
 import com.codetaylor.mc.athenaeum.util.RandomHelper;
@@ -17,9 +16,11 @@ import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -46,47 +47,38 @@ public class InteractionTool
       return false;
     }
 
-    IArtisanRecipe recipe = tile.getWorkstumpRecipe(player);
-
     ItemStack heldItemStack = player.getHeldItem(hand);
     boolean sneaking = player.isSneaking();
 
-    // Allow an empty hand if clearing, otherwise test that the recipe doesn't
-    // require tools.
+    // Allow an empty hand if clearing.
     if (sneaking
         && heldItemStack.isEmpty()
         && ModuleWorkstumpsConfig.WORKSTUMP.ALLOW_RECIPE_CLEAR) {
       return true;
-
-    } else if (heldItemStack.isEmpty()) {
-      return (recipe != null) && (recipe.getToolCount() == 0);
-    }
-
-    Item item = heldItemStack.getItem();
-    ResourceLocation registryName = item.getRegistryName();
-
-    if (registryName == null) {
-      return false;
     }
 
     if (sneaking) {
       // Player is sneaking, allow only tools for recipe repeat.
-      return ArtisanAPI.containsRecipeWithTool(heldItemStack);
+      return ArtisanAPI.containsRecipeWithTool(heldItemStack)
+          || ModuleWorkstumpsConfig.WORKSTUMP.isDefaultTool(tile.getTableName(), heldItemStack);
 
     } else {
+      IArtisanRecipe recipe = tile.getWorkstumpRecipe(player);
 
-      if (recipe == null) {
-        return false;
+      if (recipe != null) {
 
-      } else {
-        return this.isToolValidForRecipe(heldItemStack, recipe);
+        if (recipe.getToolCount() == 0) {
+          return ModuleWorkstumpsConfig.WORKSTUMP.isDefaultTool(tile.getTableName(), heldItemStack);
+
+        } else {
+          // We've already matched the player's held tool with the recipe and
+          // if a recipe was returned earlier, we know it matches.
+          return true;
+        }
       }
+
+      return false;
     }
-  }
-
-  private boolean isToolValidForRecipe(ItemStack itemStack, IArtisanRecipe recipe) {
-
-    return recipe.matchesTools(new ItemStack[]{itemStack}, new IToolHandler[]{ArtisanToolHandlers.get(itemStack)});
   }
 
   @Override

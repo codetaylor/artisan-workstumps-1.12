@@ -1,17 +1,18 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.workstump;
 
+import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.athenaeum.interaction.api.Quaternion;
 import com.codetaylor.mc.athenaeum.interaction.api.Transform;
 import com.codetaylor.mc.athenaeum.interaction.spi.InteractionItemStack;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.function.Supplier;
 
 public class InteractionInput
     extends InteractionItemStack<TileWorkstump> {
@@ -19,8 +20,9 @@ public class InteractionInput
   private static final double ONE_THIRD = 1.0 / 3.0;
   private static final double ONE_SIXTH = 1.0 / 6.0;
   private final Vec3d textOffset = new Vec3d(0, 0.25, 0);
+  private final Supplier<String> tableNameSupplier;
 
-  public InteractionInput(ItemStackHandler stackHandler, int slot, double x, double z) {
+  public InteractionInput(Supplier<String> tableNameSupplier, ItemStackHandler stackHandler, int slot, double x, double z) {
 
     super(
         new ItemStackHandler[]{stackHandler},
@@ -36,6 +38,7 @@ public class InteractionInput
             Transform.scale(0.20, 0.20, 0.20)
         )
     );
+    this.tableNameSupplier = tableNameSupplier;
   }
 
   @Override
@@ -47,15 +50,9 @@ public class InteractionInput
   @Override
   protected boolean doItemStackValidation(ItemStack itemStack) {
 
-    Item item = itemStack.getItem();
-    ResourceLocation registryName = item.getRegistryName();
-
-    if (registryName == null) {
-      return false;
-    }
-
     // Allow the item if it isn't a tool used to bang on the table.
-    return !ArtisanAPI.containsRecipeWithTool(itemStack);
+    return !ArtisanAPI.containsRecipeWithTool(itemStack)
+        && !ModuleWorkstumpsConfig.WORKSTUMP.isDefaultTool(this.tableNameSupplier.get(), itemStack);
   }
 
   @Override

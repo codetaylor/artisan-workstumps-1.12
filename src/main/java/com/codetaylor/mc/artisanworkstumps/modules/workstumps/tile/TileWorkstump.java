@@ -101,7 +101,7 @@ public class TileWorkstump
     for (int i = 0; i < 9; i++) {
       int x = 2 - (i % 3);
       int z = 2 - (i / 3);
-      interactionList.add(new InteractionInput(this.stackHandlerInput, i, x, z));
+      interactionList.add(new InteractionInput(this::getTableName, this.stackHandlerInput, i, x, z));
     }
 
     for (int i = 0; i < 3; i++) {
