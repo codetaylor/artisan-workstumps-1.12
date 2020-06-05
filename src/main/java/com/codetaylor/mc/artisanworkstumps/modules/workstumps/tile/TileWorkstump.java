@@ -211,7 +211,7 @@ public class TileWorkstump
         continue;
       }
 
-      tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+      return tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
     }
 
     return null;
