@@ -58,6 +58,10 @@ public class InteractionTool
       return true;
     }
 
+    if (heldItemStack.isEmpty()) {
+      return false;
+    }
+
     if (sneaking) {
       // Player is sneaking, allow only tools for recipe repeat.
       return ArtisanAPI.containsRecipeWithTool(heldItemStack)
@@ -69,7 +73,8 @@ public class InteractionTool
       if (recipe != null) {
 
         if (recipe.getToolCount() == 0) {
-          return ModuleWorkstumpsConfig.WORKSTUMP.isDefaultTool(tile.getTableName(), heldItemStack);
+          return ModuleWorkstumpsConfig.WORKSTUMP.isDefaultTool(tile.getTableName(), heldItemStack)
+              && ArtisanToolHandlers.get(heldItemStack).canAcceptAllDamage(heldItemStack, ModuleWorkstumpsConfig.WORKSTUMP.DEFAULT_RECIPE_TOOL_DAMAGE);
 
         } else {
           // We've already matched the player's held tool with the recipe and
