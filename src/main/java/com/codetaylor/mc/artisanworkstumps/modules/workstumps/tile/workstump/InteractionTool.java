@@ -1,7 +1,6 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.workstump;
 
 import com.codetaylor.mc.artisanworkstumps.modules.core.network.SCPacketParticleProgress;
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
@@ -21,12 +20,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -301,21 +298,9 @@ public class InteractionTool
   private ICraftingContext createCraftingContext(TileWorkstump tile, EntityPlayer player, @Nullable FluidStack fluidIngredient) {
 
     if (fluidIngredient != null) {
+      IFluidHandler capability = tile.getFluidHandler();
 
-      for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
-        BlockPos offset = tile.getPos().offset(EnumFacing.HORIZONTALS[i]);
-        TileEntity tileEntity = tile.getWorld().getTileEntity(offset);
-
-        if (!(tileEntity instanceof TileFluidStump)) {
-          continue;
-        }
-
-        IFluidHandler capability = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.HORIZONTALS[i].getOpposite());
-
-        if (capability == null) {
-          continue;
-        }
-
+      if (capability != null) {
         FluidStack drained = capability.drain(fluidIngredient, false);
 
         if (drained != null && drained.amount == fluidIngredient.amount) {

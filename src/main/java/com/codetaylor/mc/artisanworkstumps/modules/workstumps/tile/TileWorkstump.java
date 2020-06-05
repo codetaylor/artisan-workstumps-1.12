@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile;
 
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockFluidStump;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
@@ -123,18 +124,7 @@ public class TileWorkstump
 
   public boolean hasFluidStump() {
 
-    for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
-      BlockPos offset = this.getPos().offset(EnumFacing.HORIZONTALS[i]);
-      TileEntity tileEntity = this.world.getTileEntity(offset);
-
-      if (!(tileEntity instanceof TileFluidStump)) {
-        continue;
-      }
-
-      return true;
-    }
-
-    return false;
+    return this.getFluidHandler() != null;
   }
 
   public String getTableName() {
@@ -192,6 +182,41 @@ public class TileWorkstump
     return this.stackHandlerInput;
   }
 
+  /**
+   * Visits each horizontal side of the workstump with exception to the front
+   * and returns the fluid handler from the first fluid stump found that is also
+   * facing this workstump.
+   *
+   * @return the connected fluid stump or null if none
+   */
+  @Nullable
+  public IFluidHandler getFluidHandler() {
+
+    for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
+      BlockPos offset = this.getPos().offset(EnumFacing.HORIZONTALS[i]);
+
+      IBlockState blockState = this.world.getBlockState(offset);
+
+      if (!(blockState.getBlock() instanceof BlockFluidStump)) {
+        continue;
+      }
+
+      if (blockState.getValue(Properties.FACING_HORIZONTAL) != EnumFacing.HORIZONTALS[i].getOpposite()) {
+        continue;
+      }
+
+      TileEntity tileEntity = this.world.getTileEntity(offset);
+
+      if (!(tileEntity instanceof TileFluidStump)) {
+        continue;
+      }
+
+      tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+    }
+
+    return null;
+  }
+
   public IArtisanRecipe getWorkstumpRecipe(EntityPlayer player) {
 
     int playerExperience = EnchantmentHelper.getPlayerExperienceTotal(player);
@@ -201,26 +226,13 @@ public class TileWorkstump
     RecipeRegistry registry = ArtisanAPI.getWorktableRecipeRegistry(this.tableName);
 
     FluidStack fluidStack = null;
+    IFluidHandler capability = this.getFluidHandler();
 
-    for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
-      BlockPos offset = this.getPos().offset(EnumFacing.HORIZONTALS[i]);
-      TileEntity tileEntity = this.world.getTileEntity(offset);
-
-      if (!(tileEntity instanceof TileFluidStump)) {
-        continue;
-      }
-
-      IFluidHandler capability = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.HORIZONTALS[i].getOpposite());
-
-      if (capability == null) {
-        continue;
-      }
-
+    if (capability != null) {
       FluidStack drained = capability.drain(Integer.MAX_VALUE, false);
 
       if (drained != null && drained.amount > 0) {
         fluidStack = drained;
-        break;
       }
     }
 
