@@ -9,6 +9,7 @@ import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.athenaeum.interaction.api.InteractionBounds;
 import com.codetaylor.mc.athenaeum.interaction.spi.InteractionUseItemBase;
 import com.codetaylor.mc.athenaeum.util.RandomHelper;
@@ -260,6 +261,12 @@ public class InteractionTool
 
         List<ItemStack> output = new ArrayList<>();
         recipe.doCraft(this.createCraftingContext(tile, player, recipe.getFluidIngredient()), output);
+
+        if (recipe.getToolCount() == 0) {
+          // no damage was done to the tool, we need to damage it here
+          IToolHandler toolHandler = ArtisanToolHandlers.get(player.getHeldItemMainhand());
+          toolHandler.applyDamage(world, player.getHeldItemMainhand(), ModuleWorkstumpsConfig.WORKSTUMP.DEFAULT_RECIPE_TOOL_DAMAGE, player, false);
+        }
 
         for (ItemStack result : output) {
           StackHelper.spawnStackOnTop(world, result, tile.getPos(), 0.75);

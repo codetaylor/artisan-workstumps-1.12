@@ -100,6 +100,12 @@ public class ModuleWorkstumpsConfig {
       }
     }
 
+    @Config.Comment({
+        "The damage applied to the default tool when a recipe doesn't have a",
+        "tool requirement.",
+        "Default: " + 1
+    })
+    @Config.RangeInt(min = 0)
     public int DEFAULT_RECIPE_TOOL_DAMAGE = 1;
 
     @Config.Comment({
