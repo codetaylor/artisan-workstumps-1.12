@@ -5,8 +5,6 @@ import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
-import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.athenaeum.interaction.api.InteractionBounds;
 import com.codetaylor.mc.athenaeum.interaction.spi.InteractionUseItemBase;
@@ -21,10 +19,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.items.ItemStackHandler;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class InteractionRepair
     extends InteractionUseItemBase<TileWorkstump> {
@@ -57,128 +51,14 @@ public class InteractionRepair
   @Override
   protected boolean doInteraction(TileWorkstump tile, World world, BlockPos hitPos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing hitSide, float hitX, float hitY, float hitZ) {
 
-    ItemStack heldItem = player.getHeldItemMainhand();
-
-    if (player.isSneaking()) {
-
-      if (heldItem.isEmpty()) {
-
-      } else if (ModuleWorkstumpsConfig.WORKSTUMP.ALLOW_RECIPE_REPEAT) {
-        this.doRecipeRepeat(tile, player, heldItem);
-      }
-
-    } else {
-      this.doRepair(tile, world, hitPos, player, hitX, hitY, hitZ);
-    }
-
-    return true;
-  }
-
-  private void doRecipeRepeat(TileWorkstump tile, EntityPlayer player, ItemStack heldItem) {
-
-    IArtisanRecipe existingRecipe = tile.getWorkstumpRecipe(player);
-    IArtisanRecipe recipe;
-
-    if (existingRecipe != null) {
-      recipe = existingRecipe;
-
-    } else {
-
-      IArtisanRecipe retainedRecipe = tile.getRetainedRecipe();
-
-      if (retainedRecipe == null) {
-        return;
-      }
-
-      recipe = retainedRecipe;
-    }
-
-    List<IArtisanIngredient> ingredientList = recipe.getIngredientList();
-    ItemStackHandler inputStackHandler = tile.getStackHandlerInput();
-    List<ItemStack> itemStackList = new ArrayList<>(ingredientList.size());
-
-    // Gather ingredients from the player's inventory and hotbar.
-
-    for (IArtisanIngredient ingredient : ingredientList) {
-
-      if (ingredient.matches(ItemStack.EMPTY)) {
-        itemStackList.add(ItemStack.EMPTY);
-
-      } else {
-
-        for (ItemStack itemStack : player.inventory.mainInventory) {
-
-          if (ingredient.matches(itemStack)) {
-            ItemStack copy = itemStack.copy();
-            copy.setCount(1);
-            itemStackList.add(copy);
-            itemStack.shrink(1);
-            break;
-          }
-        }
-      }
-    }
-
-    // If the player doesn't have all the items, return gathered items to the
-    // player and abort.
-
-    if (ingredientList.size() != itemStackList.size()) {
-
-      for (ItemStack itemStack : itemStackList) {
-        player.addItemStackToInventory(itemStack);
-      }
-
-      return;
-    }
-
-    // Check if the table can take another recipe's worth of inputs.
-
-    boolean tableHasRoom = true;
-
-    for (int i = 0; i < itemStackList.size(); i++) {
-      ItemStack remainingItemStack = inputStackHandler.insertItem(i, itemStackList.get(i), true);
-
-      if (!remainingItemStack.isEmpty()) {
-        tableHasRoom = false;
-        break;
-      }
-    }
-
-    // If the table doesn't have room, return gathered items to the player
-    // and abort.
-
-    if (!tableHasRoom) {
-
-      for (ItemStack itemStack : itemStackList) {
-        player.addItemStackToInventory(itemStack);
-      }
-
-      return;
-    }
-
-    // Finally, insert the gathered items.
-
-    for (int i = 0; i < itemStackList.size(); i++) {
-      inputStackHandler.insertItem(i, itemStackList.get(i), false);
-    }
-
-    // Damage the held item.
-
-    int toolDamage = ModuleWorkstumpsConfig.WORKSTUMP.RECIPE_REPEAT_TOOL_DAMAGE;
-
-    if (!tile.getWorld().isRemote && toolDamage > 0) {
-      ArtisanToolHandlers.get(heldItem).applyDamage(tile.getWorld(), heldItem, toolDamage, player, false);
-    }
-  }
-
-  private void doRepair(TileWorkstump tile, World world, BlockPos hitPos, EntityPlayer player, float hitX, float hitY, float hitZ) {
-
     if (!world.isRemote) {
       this.doRepairServer(tile, world, hitPos, player);
 
     } else {
       this.doRepairClient(tile, world, hitX, hitY, hitZ);
     }
+
+    return true;
   }
 
   private void doRepairServer(TileWorkstump tile, World world, BlockPos hitPos, EntityPlayer player) {
