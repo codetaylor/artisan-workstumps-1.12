@@ -28,7 +28,11 @@
       "4": {"textures": {"crafting": "artisanworkstumps:blocks/workstump_top_damaged_3"}}
     },
     "damaged_east": {
-      "true": {},
+      "true": {
+        "submodel": {
+          "east": {"model": "artisanworkstumps:workstump_damaged_east"}
+        }
+      },
       "false": {
         "submodel": {
           "east": {"model": "artisanworkstumps:workstump_east"}
@@ -36,7 +40,11 @@
       }
     },
     "damaged_west": {
-      "true": {},
+      "true": {
+        "submodel": {
+          "west": {"model": "artisanworkstumps:workstump_damaged_west"}
+        }
+      },
       "false": {
         "submodel": {
           "west": {"model": "artisanworkstumps:workstump_west"}
@@ -44,7 +52,11 @@
       }
     },
     "damaged_south": {
-      "true": {},
+      "true": {
+        "submodel": {
+          "south": {"model": "artisanworkstumps:workstump_damaged_south"}
+        }
+      },
       "false": {
         "submodel": {
           "south": {"model": "artisanworkstumps:workstump_south"}
