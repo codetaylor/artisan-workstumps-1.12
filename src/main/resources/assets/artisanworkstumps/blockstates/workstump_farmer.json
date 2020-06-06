@@ -3,8 +3,7 @@
   "defaults": {
     "model": "artisanworkstumps:workstump",
     "textures": {
-      "theme_side": "artisanworktables:blocks/farmer_side",
-      "theme_top": "artisanworktables:blocks/farmer_top"
+      "theme_side": "artisanworktables:blocks/farmer_side"
     }
   },
   "variants": {

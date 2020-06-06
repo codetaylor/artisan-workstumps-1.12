@@ -1,0 +1,37 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "theme_side": "artisanworktables:blocks/tailor_side",
+    "9": "blocks/planks_oak",
+    "11": "artisanworkstumps:blocks/workstump_side",
+    "particle": "blocks/log_oak",
+    "bark": "blocks/log_oak"
+  },
+  "elements": [
+    {
+      "from": [0, 4, 15],
+      "to": [1, 16, 16],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 12, 23]},
+      "faces": {
+        "north": {"uv": [14, 13, 15, 1], "texture": "#bark"},
+        "east": {"uv": [15, 0, 16, 12], "texture": "#11"},
+        "south": {"uv": [0, 12, 1, 0], "texture": "#11"},
+        "west": {"uv": [15, 12, 16, 0], "texture": "#11"},
+        "up": {"uv": [0, 10, 1, 11], "texture": "#11"}
+      }
+    },
+    {
+      "from": [1, 8, 15],
+      "to": [15, 16, 16],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 19, 8]},
+      "faces": {
+        "north": {"uv": [1, 3, 15, 11], "texture": "#9"},
+        "east": {"uv": [6, 3, 7, 11], "texture": "#9"},
+        "south": {"uv": [1, 0, 15, 8], "texture": "#theme_side"},
+        "west": {"uv": [8, 3, 9, 11], "texture": "#9"},
+        "up": {"uv": [1, 11, 15, 12], "texture": "#9"},
+        "down": {"uv": [1, 8, 15, 9], "texture": "#11"}
+      }
+    }
+  ]
+}

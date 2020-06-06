@@ -3,8 +3,7 @@
   "defaults": {
     "model": "artisanworkstumps:workstump",
     "textures": {
-      "theme_side": "artisanworktables:blocks/chemist_side",
-      "theme_top": "artisanworktables:blocks/chemist_top"
+      "theme_side": "artisanworktables:blocks/chemist_side"
     }
   },
   "variants": {

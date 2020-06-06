@@ -14,15 +14,14 @@ import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.athenaeum.integration.gamestages.Stages;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
 import com.codetaylor.mc.athenaeum.interaction.spi.ITileInteractable;
+import com.codetaylor.mc.athenaeum.network.tile.data.TileDataEnum;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataFloat;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataInteger;
 import com.codetaylor.mc.athenaeum.network.tile.data.TileDataItemStackHandler;
 import com.codetaylor.mc.athenaeum.network.tile.spi.ITileData;
 import com.codetaylor.mc.athenaeum.network.tile.spi.TileEntityDataBase;
-import com.codetaylor.mc.athenaeum.util.BlockHelper;
-import com.codetaylor.mc.athenaeum.util.EnchantmentHelper;
 import com.codetaylor.mc.athenaeum.util.Properties;
-import com.codetaylor.mc.athenaeum.util.StackHelper;
+import com.codetaylor.mc.athenaeum.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
@@ -40,9 +39,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class TileWorkstump
     extends TileEntityDataBase
@@ -52,6 +49,7 @@ public class TileWorkstump
   private StackHandlerInput stackHandlerInput;
   private StackHandlerShelf stackHandlerShelf;
   private TileDataInteger remainingDurability;
+  private TileDataEnum<EnumDamagedSide>[] damagedSides;
 
   private TileDataFloat recipeProgress;
 
@@ -79,6 +77,17 @@ public class TileWorkstump
 
     this.remainingDurability = new TileDataInteger(this.getDurability());
 
+    //noinspection unchecked
+    this.damagedSides = new TileDataEnum[3];
+
+    for (int i = 0; i < this.damagedSides.length; i++) {
+      this.damagedSides[i] = new TileDataEnum<>(
+          ordinal -> EnumDamagedSide.values()[ordinal],
+          Enum::ordinal,
+          EnumDamagedSide.None
+      );
+    }
+
     // --- Network ---
 
     this.inputTileDataItemStackHandler = new TileDataItemStackHandler<>(this.stackHandlerInput);
@@ -87,7 +96,10 @@ public class TileWorkstump
         this.inputTileDataItemStackHandler,
         new TileDataItemStackHandler<>(this.stackHandlerShelf),
         this.recipeProgress,
-        this.remainingDurability
+        this.remainingDurability,
+        this.damagedSides[0],
+        this.damagedSides[1],
+        this.damagedSides[2]
     });
 
     // --- Interactions ---
@@ -172,9 +184,25 @@ public class TileWorkstump
     return this.remainingDurability.get();
   }
 
-  public int addRemainingDurability(int remainingDurability) {
+  public int addRemainingDurability(int value) {
 
-    return this.remainingDurability.add(remainingDurability);
+    int durabilityMax = this.getDurability();
+    int remainingDurability = Math.max(0, Math.min(durabilityMax, this.remainingDurability.get() + value));
+    this.remainingDurability.set(remainingDurability);
+    this.updateDamagedSides(remainingDurability, durabilityMax);
+    return remainingDurability;
+  }
+
+  public boolean isSideDamaged(EnumDamagedSide side) {
+
+    for (TileDataEnum<EnumDamagedSide> damagedSide : this.damagedSides) {
+
+      if (damagedSide.get() == side) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public StackHandlerInput getStackHandlerInput() {
@@ -322,6 +350,10 @@ public class TileWorkstump
     if (compound.hasKey("retainedRecipe")) {
       this.retainedRecipeName = compound.getString("retainedRecipe");
     }
+
+    this.damagedSides[0].set(EnumDamagedSide.values()[compound.getByte("damagedSide0")]);
+    this.damagedSides[1].set(EnumDamagedSide.values()[compound.getByte("damagedSide1")]);
+    this.damagedSides[2].set(EnumDamagedSide.values()[compound.getByte("damagedSide2")]);
   }
 
   @Nonnull
@@ -338,6 +370,10 @@ public class TileWorkstump
     if (this.retainedRecipeName != null) {
       compound.setString("retainedRecipe", this.retainedRecipeName);
     }
+
+    compound.setByte("damagedSide0", (byte) this.damagedSides[0].get().ordinal());
+    compound.setByte("damagedSide1", (byte) this.damagedSides[1].get().ordinal());
+    compound.setByte("damagedSide2", (byte) this.damagedSides[2].get().ordinal());
 
     return compound;
   }
@@ -389,9 +425,103 @@ public class TileWorkstump
   @Override
   public void onTileDataUpdate() {
 
-    if (("mage".equals(this.tableName) && this.inputTileDataItemStackHandler.isDirty())
-        || this.remainingDurability.isDirty()) {
+    boolean requiresBlockUpdate = false;
+
+    if ("mage".equals(this.tableName) && this.inputTileDataItemStackHandler.isDirty()) {
+      requiresBlockUpdate = true;
+    }
+
+    if (this.remainingDurability.isDirty()) {
+      requiresBlockUpdate = true;
+    }
+
+    for (int i = 0; i < this.damagedSides.length; i++) {
+
+      if (this.damagedSides[i].isDirty()) {
+        requiresBlockUpdate = true;
+      }
+    }
+
+    if (requiresBlockUpdate) {
       BlockHelper.notifyBlockUpdate(this.world, this.pos);
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // - Internal
+  // ---------------------------------------------------------------------------
+
+  private EnumDamagedSide selectSideToDamage() {
+
+    // Create a set of all sides.
+    Set<EnumDamagedSide> sideSet = new HashSet<EnumDamagedSide>(3) {{
+      add(EnumDamagedSide.West);
+      add(EnumDamagedSide.East);
+      add(EnumDamagedSide.South);
+    }};
+
+    // Remove any sides that are already damaged.
+    for (TileDataEnum<EnumDamagedSide> damagedSide : this.damagedSides) {
+      sideSet.remove(damagedSide.get());
+    }
+
+    // Select and return a random value from the remaining set.
+    EnumDamagedSide[] sides = sideSet.toArray(new EnumDamagedSide[0]);
+    return sides[RandomHelper.random().nextInt(sides.length)];
+  }
+
+  private void updateDamagedSides(int remainingDurability, int durabilityMax) {
+
+    float durabilityPercentage = remainingDurability / (float) durabilityMax;
+
+    if (durabilityPercentage <= 0.11) {
+      // should have 3 panels down
+
+      for (TileDataEnum<EnumDamagedSide> damagedSide : this.damagedSides) {
+
+        if (damagedSide.get() == EnumDamagedSide.None) {
+          damagedSide.set(this.selectSideToDamage());
+        }
+      }
+
+    } else if (durabilityPercentage <= 0.22) {
+      // should have 2 panels down
+
+      if (this.damagedSides[2].get() != EnumDamagedSide.None) {
+        this.damagedSides[2].set(EnumDamagedSide.None);
+      }
+
+      for (int i = 0; i < this.damagedSides.length - 1; i++) {
+
+        if (this.damagedSides[i].get() == EnumDamagedSide.None) {
+          this.damagedSides[i].set(this.selectSideToDamage());
+        }
+      }
+
+    } else if (durabilityPercentage <= 0.33) {
+      // should have 1 panel down
+
+      for (int i = 1; i < this.damagedSides.length; i++) {
+
+        if (this.damagedSides[i].get() != EnumDamagedSide.None) {
+          this.damagedSides[i].set(EnumDamagedSide.None);
+        }
+      }
+
+      if (this.damagedSides[0].get() == EnumDamagedSide.None) {
+        this.damagedSides[0].set(this.selectSideToDamage());
+      }
+
+    } else {
+      // should have 0 panels down
+
+      for (TileDataEnum<EnumDamagedSide> damagedSide : this.damagedSides) {
+
+        if (damagedSide.get() != EnumDamagedSide.None) {
+          damagedSide.set(EnumDamagedSide.None);
+        }
+      }
+    }
+  }
+
 }

@@ -2,12 +2,14 @@ package com.codetaylor.mc.artisanworkstumps.modules.workstumps.block;
 
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanks;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
+import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.workstump.EnumDamagedSide;
 import com.codetaylor.mc.athenaeum.interaction.spi.IBlockInteractable;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
 import com.codetaylor.mc.athenaeum.spi.BlockPartialBase;
 import com.codetaylor.mc.athenaeum.util.Properties;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -50,6 +52,9 @@ public class BlockWorkstump
   public static final String NAME_POTTER = "workstump_potter";
 
   public static final PropertyInteger CONDITION = PropertyInteger.create("condition", 0, 4);
+  public static final PropertyBool DAMAGED_EAST = PropertyBool.create("damaged_east");
+  public static final PropertyBool DAMAGED_WEST = PropertyBool.create("damaged_west");
+  public static final PropertyBool DAMAGED_SOUTH = PropertyBool.create("damaged_south");
 
   private final String tableName;
 
@@ -178,7 +183,7 @@ public class BlockWorkstump
   @Override
   protected BlockStateContainer createBlockState() {
 
-    return new BlockStateContainer(this, Properties.FACING_HORIZONTAL, CONDITION);
+    return new BlockStateContainer(this, Properties.FACING_HORIZONTAL, CONDITION, DAMAGED_EAST, DAMAGED_WEST, DAMAGED_SOUTH);
   }
 
   @SuppressWarnings("deprecation")
@@ -203,10 +208,7 @@ public class BlockWorkstump
   @Override
   public boolean isSideSolid(IBlockState base_state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, EnumFacing side) {
 
-    return (side == EnumFacing.DOWN
-        || side == EnumFacing.EAST
-        || side == EnumFacing.WEST
-        || side == EnumFacing.SOUTH);
+    return (side == EnumFacing.DOWN);
   }
 
   @SuppressWarnings("deprecation")
@@ -237,6 +239,10 @@ public class BlockWorkstump
       } else {
         state = state.withProperty(CONDITION, 0);
       }
+
+      state = state.withProperty(DAMAGED_EAST, tileWorkstump.isSideDamaged(EnumDamagedSide.East));
+      state = state.withProperty(DAMAGED_WEST, tileWorkstump.isSideDamaged(EnumDamagedSide.West));
+      state = state.withProperty(DAMAGED_SOUTH, tileWorkstump.isSideDamaged(EnumDamagedSide.South));
     }
 
     return state;
