@@ -1,9 +1,11 @@
 package com.codetaylor.mc.artisanworkstumps.modules.tanks.block;
 
+import com.codetaylor.mc.artisanworkstumps.ModArtisanWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanksConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
+import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.workstump.EnumDamagedSide;
 import com.codetaylor.mc.athenaeum.interaction.spi.IBlockInteractable;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
 import com.codetaylor.mc.athenaeum.spi.BlockPartialBase;
@@ -213,6 +215,48 @@ public class BlockFluidStump
     EnumFacing facing = blockState.getValue(Properties.FACING_HORIZONTAL);
 
     if (facing == side) {
+      return false;
+    }
+
+    // Translate to local block facing.
+    EnumFacing localFacing;
+
+    switch (facing) {
+      case SOUTH:
+        localFacing = side.rotateY().rotateY();
+        break;
+      case EAST:
+        localFacing = side.rotateYCCW();
+        break;
+      case WEST:
+        localFacing = side.rotateY();
+        break;
+      case NORTH:
+      default:
+        localFacing = side;
+        break;
+    }
+
+    // Translate to damaged side enum.
+    EnumDamagedSide damagedSide;
+
+    switch (localFacing) {
+      case EAST:
+        damagedSide = EnumDamagedSide.East;
+        break;
+      case WEST:
+        damagedSide = EnumDamagedSide.West;
+        break;
+      case SOUTH:
+        damagedSide = EnumDamagedSide.South;
+        break;
+      default:
+        ModArtisanWorkstumps.LOGGER.error("Error translating local facing: " + localFacing.toString());
+        return false;
+    }
+
+    // Check if the translated side is damaged and disallow if it is.
+    if (((TileWorkstump) tileEntity).isSideDamaged(damagedSide)) {
       return false;
     }
 
