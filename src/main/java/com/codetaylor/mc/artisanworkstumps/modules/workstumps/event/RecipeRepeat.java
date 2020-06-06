@@ -1,9 +1,12 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.event;
 
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanks;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,8 +28,10 @@ public final class RecipeRepeat {
       BlockPos pos = event.getPos();
       IBlockState blockState = world.getBlockState(pos);
       Block block = blockState.getBlock();
+      ItemStack itemStack = event.getItemStack();
 
-      if (block instanceof BlockWorkstump) {
+      if (block instanceof BlockWorkstump
+          && itemStack.getItem() != Item.getItemFromBlock(ModuleTanks.Blocks.FLUID_STUMP)) {
 
         TileEntity tileEntity = world.getTileEntity(pos);
 
