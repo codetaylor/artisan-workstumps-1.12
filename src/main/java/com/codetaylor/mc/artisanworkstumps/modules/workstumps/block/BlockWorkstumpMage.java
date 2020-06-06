@@ -35,7 +35,7 @@ public class BlockWorkstumpMage
   @Override
   protected BlockStateContainer createBlockState() {
 
-    return new BlockStateContainer(this, Properties.FACING_HORIZONTAL, ACTIVE, CONDITION);
+    return new BlockStateContainer(this, Properties.FACING_HORIZONTAL, ACTIVE, CONDITION, DAMAGED_EAST, DAMAGED_WEST, DAMAGED_SOUTH);
   }
 
   @Override
