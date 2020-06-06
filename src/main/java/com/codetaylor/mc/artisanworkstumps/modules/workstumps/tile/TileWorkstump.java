@@ -189,6 +189,61 @@ public class TileWorkstump
     return remainingDurability;
   }
 
+  public boolean isSideDamaged(EnumFacing side) {
+
+    IBlockState blockState = this.world.getBlockState(this.pos);
+
+    if (!(blockState.getBlock() instanceof BlockWorkstump)) {
+      return false;
+    }
+
+    EnumFacing facing = blockState.getValue(Properties.FACING_HORIZONTAL);
+
+    if (facing == side) {
+      return false;
+    }
+
+    // Translate to local block facing.
+    EnumFacing localFacing;
+
+    switch (facing) {
+      case SOUTH:
+        localFacing = side.rotateY().rotateY();
+        break;
+      case EAST:
+        localFacing = side.rotateYCCW();
+        break;
+      case WEST:
+        localFacing = side.rotateY();
+        break;
+      case NORTH:
+      default:
+        localFacing = side;
+        break;
+    }
+
+    // Translate to damaged side enum.
+    EnumDamagedSide damagedSide;
+
+    switch (localFacing) {
+      case EAST:
+        damagedSide = EnumDamagedSide.East;
+        break;
+      case WEST:
+        damagedSide = EnumDamagedSide.West;
+        break;
+      case SOUTH:
+        damagedSide = EnumDamagedSide.South;
+        break;
+      default:
+        ModArtisanWorkstumps.LOGGER.error("Error translating local facing: " + localFacing.toString());
+        return false;
+    }
+
+    // Check if the translated side is damaged and disallow if it is.
+    return this.isSideDamaged(damagedSide);
+  }
+
   public boolean isSideDamaged(EnumDamagedSide side) {
 
     for (TileDataEnum<EnumDamagedSide> damagedSide : this.damagedSides) {
@@ -554,60 +609,5 @@ public class TileWorkstump
     if (this.isSideDamaged(workstumpFacing)) {
       this.world.destroyBlock(fluidStumpPos, true);
     }
-  }
-
-  public boolean isSideDamaged(EnumFacing side) {
-
-    IBlockState blockState = this.world.getBlockState(this.pos);
-
-    if (!(blockState.getBlock() instanceof BlockWorkstump)) {
-      return false;
-    }
-
-    EnumFacing facing = blockState.getValue(Properties.FACING_HORIZONTAL);
-
-    if (facing == side) {
-      return false;
-    }
-
-    // Translate to local block facing.
-    EnumFacing localFacing;
-
-    switch (facing) {
-      case SOUTH:
-        localFacing = side.rotateY().rotateY();
-        break;
-      case EAST:
-        localFacing = side.rotateYCCW();
-        break;
-      case WEST:
-        localFacing = side.rotateY();
-        break;
-      case NORTH:
-      default:
-        localFacing = side;
-        break;
-    }
-
-    // Translate to damaged side enum.
-    EnumDamagedSide damagedSide;
-
-    switch (localFacing) {
-      case EAST:
-        damagedSide = EnumDamagedSide.East;
-        break;
-      case WEST:
-        damagedSide = EnumDamagedSide.West;
-        break;
-      case SOUTH:
-        damagedSide = EnumDamagedSide.South;
-        break;
-      default:
-        ModArtisanWorkstumps.LOGGER.error("Error translating local facing: " + localFacing.toString());
-        return false;
-    }
-
-    // Check if the translated side is damaged and disallow if it is.
-    return this.isSideDamaged(damagedSide);
   }
 }
