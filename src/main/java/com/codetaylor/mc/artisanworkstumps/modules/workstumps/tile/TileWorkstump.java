@@ -105,10 +105,9 @@ public class TileWorkstump
 
     // --- Interactions ---
 
-    this.interactions = new IInteraction[12];
-
     List<IInteraction> interactionList = new ArrayList<>();
 
+    interactionList.add(new InteractionRepair());
     interactionList.add(new InteractionTool());
 
     for (int i = 0; i < 9; i++) {
