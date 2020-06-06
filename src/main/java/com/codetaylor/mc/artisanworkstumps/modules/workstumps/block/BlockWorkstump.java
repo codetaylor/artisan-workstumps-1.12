@@ -64,6 +64,10 @@ public class BlockWorkstump
     this.setHardness(2);
     this.setResistance(5);
     this.tableName = tableName;
+    this.setDefaultState(this.blockState.getBaseState()
+        .withProperty(DAMAGED_EAST, false)
+        .withProperty(DAMAGED_WEST, false)
+        .withProperty(DAMAGED_SOUTH, false));
   }
 
   // ---------------------------------------------------------------------------

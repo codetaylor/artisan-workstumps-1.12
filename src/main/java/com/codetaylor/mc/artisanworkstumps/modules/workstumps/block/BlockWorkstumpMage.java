@@ -28,7 +28,10 @@ public class BlockWorkstumpMage
 
     super(EnumType.MAGE.getName());
     this.setDefaultState(this.blockState.getBaseState()
-        .withProperty(ACTIVE, false));
+        .withProperty(ACTIVE, false)
+        .withProperty(DAMAGED_EAST, false)
+        .withProperty(DAMAGED_WEST, false)
+        .withProperty(DAMAGED_SOUTH, false));
   }
 
   @Nonnull
