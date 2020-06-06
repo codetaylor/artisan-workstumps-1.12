@@ -52,7 +52,8 @@ public class InteractionInput
 
     // Allow the item if it isn't a tool used to bang on the table.
     return !ArtisanAPI.containsRecipeWithTool(itemStack)
-        && !ModuleWorkstumpsConfig.WORKSTUMP.isDefaultTool(this.tableNameSupplier.get(), itemStack);
+        && !ModuleWorkstumpsConfig.WORKSTUMP.isDefaultTool(this.tableNameSupplier.get(), itemStack)
+        && !ModuleWorkstumpsConfig.WORKSTUMP.isRepairTool(itemStack);
   }
 
   @Override

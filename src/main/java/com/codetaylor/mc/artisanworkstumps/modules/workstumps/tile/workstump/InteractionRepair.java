@@ -31,6 +31,18 @@ public class InteractionRepair
   @Override
   protected boolean allowInteraction(TileWorkstump tile, World world, BlockPos hitPos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing hitSide, float hitX, float hitY, float hitZ) {
 
+    if (!ModuleWorkstumpsConfig.WORKSTUMP.USES_DURABILITY) {
+      return false;
+    }
+
+    if (!ModuleWorkstumpsConfig.WORKSTUMP.ALLOW_REPAIR) {
+      return false;
+    }
+
+    if (tile.getDurability() == tile.getRemainingDurability()) {
+      return false;
+    }
+
     if (hand != EnumHand.MAIN_HAND) {
       return false;
     }
@@ -39,7 +51,7 @@ public class InteractionRepair
     ItemStack heldItemOffhand = player.getHeldItemOffhand();
 
     return OreDictHelper.contains("plankWood", heldItemOffhand)
-        && OreDictHelper.contains("artisansFramingHammer", heldItemMainhand);
+        && ModuleWorkstumpsConfig.WORKSTUMP.isRepairTool(heldItemMainhand);
   }
 
   @Override
@@ -65,19 +77,32 @@ public class InteractionRepair
 
     world.playSound(null, hitPos, SoundEvents.BLOCK_WOOD_HIT, SoundCategory.BLOCKS, 1, 1);
 
-    ModuleWorkstumps.PACKET_SERVICE.sendToAllAround(
-        new SCPacketParticleProgress(hitPos.getX() + 0.5, hitPos.getY() + 1, hitPos.getZ() + 0.5, 2),
-        world.provider.getDimension(),
-        hitPos
-    );
-
     // damage the tool
-    IToolHandler toolHandler = ArtisanToolHandlers.get(player.getHeldItemMainhand());
-    toolHandler.applyDamage(world, player.getHeldItemMainhand(), ModuleWorkstumpsConfig.WORKSTUMP.DEFAULT_RECIPE_TOOL_DAMAGE, player, false);
-    player.getHeldItemOffhand().shrink(1);
+    int damage = ModuleWorkstumpsConfig.WORKSTUMP.REPAIR_TOOL_DAMAGE;
+
+    if (damage > 0) {
+      IToolHandler toolHandler = ArtisanToolHandlers.get(player.getHeldItemMainhand());
+      toolHandler.applyDamage(world, player.getHeldItemMainhand(), damage, player, false);
+    }
+
+    // shrink the planks
+    int plankCount = Math.max(0, ModuleWorkstumpsConfig.WORKSTUMP.AMOUNT_OF_PLANKS_CONSUMED_PER_REPAIR);
+
+    if (plankCount > 0) {
+      player.getHeldItemOffhand().shrink(plankCount);
+    }
 
     // repair the workstump
-    tile.addRemainingDurability(1);
+    int repairAmount = Math.max(0, ModuleWorkstumpsConfig.WORKSTUMP.AMOUNT_OF_DAMAGE_REPAIRED_PER_REPAIR);
+
+    if (repairAmount > 0) {
+      ModuleWorkstumps.PACKET_SERVICE.sendToAllAround(
+          new SCPacketParticleProgress(hitPos.getX() + 0.5, hitPos.getY() + 1, hitPos.getZ() + 0.5, 2),
+          world.provider.getDimension(),
+          hitPos
+      );
+      tile.addRemainingDurability(repairAmount);
+    }
   }
 
   private void doRepairClient(TileWorkstump tile, World world, float hitX, float hitY, float hitZ) {

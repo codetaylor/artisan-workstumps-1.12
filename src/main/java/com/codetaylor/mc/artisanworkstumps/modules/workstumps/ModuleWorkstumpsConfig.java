@@ -76,29 +76,81 @@ public class ModuleWorkstumpsConfig {
 
       try {
         String toolString = this.DEFAULT_RECIPE_TOOL.get(tableName);
-        ParseResult parseResult = RecipeItemParser.INSTANCE.parse(toolString);
-
-        if ("ore".equals(parseResult.getDomain())) {
-          return OreDictHelper.contains(parseResult.getPath(), heldItemStack);
-
-        } else {
-          Item item = heldItemStack.getItem();
-          ResourceLocation registryName = item.getRegistryName();
-
-          if (registryName == null) {
-            return false;
-          }
-
-          return registryName.getResourceDomain().equals(parseResult.getDomain())
-              && registryName.getResourcePath().equals(parseResult.getPath())
-              && (parseResult.getMeta() == OreDictionary.WILDCARD_VALUE || parseResult.getMeta() == heldItemStack.getMetadata());
-        }
+        return Workstump.matches(heldItemStack, toolString);
 
       } catch (MalformedRecipeItemException e) {
         ModArtisanWorkstumps.LOGGER.error("Error parsing default recipe tool from workstump config", e);
         return false;
       }
     }
+
+    @Config.Comment({
+        "The tool required to repair a workstump.",
+        "Syntax: (domain):(path):(meta)",
+        " - meta is optional, supports oredict",
+        "Default: ore:artisansFramingHammer"
+    })
+    public String REPAIR_TOOL = "ore:artisansFramingHammer";
+
+    public boolean isRepairTool(ItemStack itemStack) {
+
+      try {
+        return Workstump.matches(itemStack, REPAIR_TOOL);
+
+      } catch (MalformedRecipeItemException e) {
+        ModArtisanWorkstumps.LOGGER.error("Error parsing repair tool from workstump config", e);
+        return false;
+      }
+    }
+
+    private static boolean matches(ItemStack heldItemStack, String itemString) throws MalformedRecipeItemException {
+
+      ParseResult parseResult = RecipeItemParser.INSTANCE.parse(itemString);
+
+      if ("ore".equals(parseResult.getDomain())) {
+        return OreDictHelper.contains(parseResult.getPath(), heldItemStack);
+
+      } else {
+        Item item = heldItemStack.getItem();
+        ResourceLocation registryName = item.getRegistryName();
+
+        if (registryName == null) {
+          return false;
+        }
+
+        return registryName.getResourceDomain().equals(parseResult.getDomain())
+            && registryName.getResourcePath().equals(parseResult.getPath())
+            && (parseResult.getMeta() == OreDictionary.WILDCARD_VALUE || parseResult.getMeta() == heldItemStack.getMetadata());
+      }
+    }
+
+    @Config.Comment({
+        "If true, the workstump can be repaired using ore:plankWood and the",
+        "configured tool.",
+        "Default: " + true
+    })
+    public boolean ALLOW_REPAIR = true;
+
+    @Config.Comment({
+        "The damage applied to the repair tool per repair.",
+        "Default: " + 1
+    })
+    @Config.RangeInt(min = 0)
+    public int REPAIR_TOOL_DAMAGE = 1;
+
+    @Config.Comment({
+        "The amount of workstump damage repaired per repair.",
+        "Default: " + 4
+    })
+    @Config.RangeInt(min = 0)
+    public int AMOUNT_OF_DAMAGE_REPAIRED_PER_REPAIR = 4;
+
+    @Config.Comment({
+        "The amount of planks consumed per repair.",
+        "Default: " + 1
+    })
+    @Config.RangeInt(min = 0)
+    public int AMOUNT_OF_PLANKS_CONSUMED_PER_REPAIR = 1;
 
     @Config.Comment({
         "The damage applied to the default tool when a recipe doesn't have a",
