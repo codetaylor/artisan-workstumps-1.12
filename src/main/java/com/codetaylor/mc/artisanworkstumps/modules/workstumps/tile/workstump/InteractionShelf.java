@@ -8,13 +8,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.items.ItemStackHandler;
 
+import java.util.function.BooleanSupplier;
+
 public class InteractionShelf
     extends InteractionItemStack<TileWorkstump> {
 
   private static final double ONE_THIRD = 1.0 / 3.0;
   private static final double ONE_SIXTH = 1.0 / 6.0;
+  private final BooleanSupplier enabledSupplier;
 
-  public InteractionShelf(ItemStackHandler stackHandler, int slot, double x) {
+  public InteractionShelf(ItemStackHandler stackHandler, int slot, double x, BooleanSupplier enabledSupplier) {
 
     super(
         new ItemStackHandler[]{stackHandler},
@@ -30,5 +33,12 @@ public class InteractionShelf
             Transform.scale(0.20, 0.20, 0.20)
         )
     );
+    this.enabledSupplier = enabledSupplier;
+  }
+
+  @Override
+  public boolean isEnabled() {
+
+    return this.enabledSupplier.getAsBoolean();
   }
 }

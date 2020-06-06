@@ -119,7 +119,8 @@ public class TileWorkstump
 
     for (int i = 0; i < 3; i++) {
       int x = i % 3;
-      interactionList.add(new InteractionShelf(this.stackHandlerShelf, i, x));
+      final int index = i;
+      interactionList.add(new InteractionShelf(this.stackHandlerShelf, i, x, () -> index == 2 || !this.isSideDamaged(EnumDamagedSide.West)));
     }
 
     this.interactions = interactionList.toArray(new IInteraction[0]);
@@ -597,17 +598,22 @@ public class TileWorkstump
 
     TileFluidStump fluidStump = this.getFluidStump();
 
-    if (fluidStump == null) {
-      return;
+    if (fluidStump != null) {
+      BlockPos fluidStumpPos = fluidStump.getPos();
+      IBlockState fluidStumpBlockState = this.world.getBlockState(fluidStumpPos);
+      EnumFacing fluidStumpFacing = fluidStumpBlockState.getValue(Properties.FACING_HORIZONTAL);
+      EnumFacing workstumpFacing = fluidStumpFacing.getOpposite();
+
+      if (this.isSideDamaged(workstumpFacing)) {
+        this.world.destroyBlock(fluidStumpPos, true);
+      }
     }
 
-    BlockPos fluidStumpPos = fluidStump.getPos();
-    IBlockState fluidStumpBlockState = this.world.getBlockState(fluidStumpPos);
-    EnumFacing fluidStumpFacing = fluidStumpBlockState.getValue(Properties.FACING_HORIZONTAL);
-    EnumFacing workstumpFacing = fluidStumpFacing.getOpposite();
+    // If the west side is damaged, pop the shelf contents out.
 
-    if (this.isSideDamaged(workstumpFacing)) {
-      this.world.destroyBlock(fluidStumpPos, true);
+    if (this.isSideDamaged(EnumDamagedSide.West)) {
+      StackHelper.spawnStackOnTop(this.world, this.stackHandlerShelf.extractItem(0, this.stackHandlerShelf.getStackInSlot(0).getCount(), false), this.pos);
+      StackHelper.spawnStackOnTop(this.world, this.stackHandlerShelf.extractItem(1, this.stackHandlerShelf.getStackInSlot(1).getCount(), false), this.pos);
     }
   }
 }
