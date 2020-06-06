@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "artisanworkstumps:workstump",
+    "model": "artisanworkstumps:workstump_base",
     "textures": {
       "theme_side": "artisanworktables:blocks/blacksmith_side"
     }
@@ -26,6 +26,42 @@
       "2": {"textures": {"crafting": "artisanworkstumps:blocks/workstump_top_damaged_1"}},
       "3": {"textures": {"crafting": "artisanworkstumps:blocks/workstump_top_damaged_2"}},
       "4": {"textures": {"crafting": "artisanworkstumps:blocks/workstump_top_damaged_3"}}
+    },
+    "damaged_east": {
+      "true": {
+        "submodel": {
+          "east": {"model": "artisanworkstumps:workstump_damaged_east"}
+        }
+      },
+      "false": {
+        "submodel": {
+          "east": {"model": "artisanworkstumps:workstump_east"}
+        }
+      }
+    },
+    "damaged_west": {
+      "true": {
+        "submodel": {
+          "west": {"model": "artisanworkstumps:workstump_damaged_west"}
+        }
+      },
+      "false": {
+        "submodel": {
+          "west": {"model": "artisanworkstumps:workstump_west"}
+        }
+      }
+    },
+    "damaged_south": {
+      "true": {
+        "submodel": {
+          "south": {"model": "artisanworkstumps:workstump_damaged_south"}
+        }
+      },
+      "false": {
+        "submodel": {
+          "south": {"model": "artisanworkstumps:workstump_south"}
+        }
+      }
     }
   }
 }

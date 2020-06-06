@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "artisanworkstumps:workstump",
+    "model": "artisanworkstumps:workstump_base",
     "textures": {
       "theme_side": "artisanworktables:blocks/mage_side_inactive"
     }
@@ -35,6 +35,42 @@
         }
       },
       "false": {}
+    },
+    "damaged_east": {
+      "true": {
+        "submodel": {
+          "east": {"model": "artisanworkstumps:workstump_damaged_east"}
+        }
+      },
+      "false": {
+        "submodel": {
+          "east": {"model": "artisanworkstumps:workstump_east"}
+        }
+      }
+    },
+    "damaged_west": {
+      "true": {
+        "submodel": {
+          "west": {"model": "artisanworkstumps:workstump_damaged_west"}
+        }
+      },
+      "false": {
+        "submodel": {
+          "west": {"model": "artisanworkstumps:workstump_west"}
+        }
+      }
+    },
+    "damaged_south": {
+      "true": {
+        "submodel": {
+          "south": {"model": "artisanworkstumps:workstump_damaged_south"}
+        }
+      },
+      "false": {
+        "submodel": {
+          "south": {"model": "artisanworkstumps:workstump_south"}
+        }
+      }
     }
   }
 }
