@@ -1,5 +1,6 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile;
 
+import com.codetaylor.mc.artisanworkstumps.ModArtisanWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockFluidStump;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
@@ -134,11 +135,6 @@ public class TileWorkstump
   // - Accessors
   // ---------------------------------------------------------------------------
 
-  public boolean hasFluidStump() {
-
-    return this.getFluidHandler() != null;
-  }
-
   public String getTableName() {
 
     return this.tableName;
@@ -210,15 +206,34 @@ public class TileWorkstump
     return this.stackHandlerInput;
   }
 
+  public boolean hasFluidStump() {
+
+    return this.getFluidStump() != null;
+  }
+
+  /**
+   * @return the connected fluid stump's fluid handler or null if none
+   */
+  @Nullable
+  public IFluidHandler getFluidHandler() {
+
+    TileFluidStump tileEntity = this.getFluidStump();
+
+    if (tileEntity == null) {
+      return null;
+    }
+
+    return tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+  }
+
   /**
    * Visits each horizontal side of the workstump with exception to the front
-   * and returns the fluid handler from the first fluid stump found that is also
-   * facing this workstump.
+   * and returns the first fluid stump found that is also facing this workstump.
    *
    * @return the connected fluid stump or null if none
    */
   @Nullable
-  public IFluidHandler getFluidHandler() {
+  public TileFluidStump getFluidStump() {
 
     for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
       BlockPos offset = this.getPos().offset(EnumFacing.HORIZONTALS[i]);
@@ -239,7 +254,7 @@ public class TileWorkstump
         continue;
       }
 
-      return tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+      return (TileFluidStump) tileEntity;
     }
 
     return null;
@@ -522,6 +537,77 @@ public class TileWorkstump
         }
       }
     }
+
+    // Break the connected fluid stump if it is attached to a damaged side.
+
+    TileFluidStump fluidStump = this.getFluidStump();
+
+    if (fluidStump == null) {
+      return;
+    }
+
+    BlockPos fluidStumpPos = fluidStump.getPos();
+    IBlockState fluidStumpBlockState = this.world.getBlockState(fluidStumpPos);
+    EnumFacing fluidStumpFacing = fluidStumpBlockState.getValue(Properties.FACING_HORIZONTAL);
+    EnumFacing workstumpFacing = fluidStumpFacing.getOpposite();
+
+    if (this.isSideDamaged(workstumpFacing)) {
+      this.world.destroyBlock(fluidStumpPos, true);
+    }
   }
 
+  public boolean isSideDamaged(EnumFacing side) {
+
+    IBlockState blockState = this.world.getBlockState(this.pos);
+
+    if (!(blockState.getBlock() instanceof BlockWorkstump)) {
+      return false;
+    }
+
+    EnumFacing facing = blockState.getValue(Properties.FACING_HORIZONTAL);
+
+    if (facing == side) {
+      return false;
+    }
+
+    // Translate to local block facing.
+    EnumFacing localFacing;
+
+    switch (facing) {
+      case SOUTH:
+        localFacing = side.rotateY().rotateY();
+        break;
+      case EAST:
+        localFacing = side.rotateYCCW();
+        break;
+      case WEST:
+        localFacing = side.rotateY();
+        break;
+      case NORTH:
+      default:
+        localFacing = side;
+        break;
+    }
+
+    // Translate to damaged side enum.
+    EnumDamagedSide damagedSide;
+
+    switch (localFacing) {
+      case EAST:
+        damagedSide = EnumDamagedSide.East;
+        break;
+      case WEST:
+        damagedSide = EnumDamagedSide.West;
+        break;
+      case SOUTH:
+        damagedSide = EnumDamagedSide.South;
+        break;
+      default:
+        ModArtisanWorkstumps.LOGGER.error("Error translating local facing: " + localFacing.toString());
+        return false;
+    }
+
+    // Check if the translated side is damaged and disallow if it is.
+    return this.isSideDamaged(damagedSide);
+  }
 }
