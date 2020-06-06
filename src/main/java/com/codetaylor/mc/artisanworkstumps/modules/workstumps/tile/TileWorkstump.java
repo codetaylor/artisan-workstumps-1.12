@@ -7,6 +7,7 @@ import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.workstump.*;
+import com.codetaylor.mc.artisanworkstumps.modules.workstumps.util.ToolHarvestLevelHelper;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
@@ -28,6 +29,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -367,9 +369,26 @@ public class TileWorkstump
     return ModuleWorkstumpsConfig.WORKSTUMP.DURABILITY;
   }
 
-  public int getHitsPerCraft() {
+  public int getHitsPerCraft(ItemStack itemStack) {
 
-    return ModuleWorkstumpsConfig.WORKSTUMP.HITS_PER_CRAFT;
+    int maxHarvestLevel = 0;
+    Item item = itemStack.getItem();
+
+    for (String toolClass : item.getToolClasses(itemStack)) {
+      int harvestLevel = item.getHarvestLevel(itemStack, toolClass, null, null);
+
+      if (harvestLevel > maxHarvestLevel) {
+        maxHarvestLevel = harvestLevel;
+      }
+    }
+
+    int materialHarvestLevel = ToolHarvestLevelHelper.getHarvestLevel(itemStack);
+
+    if (materialHarvestLevel > maxHarvestLevel) {
+      maxHarvestLevel = materialHarvestLevel;
+    }
+
+    return ArrayHelper.getOrLast(ModuleWorkstumpsConfig.WORKSTUMP.HITS_PER_CRAFT, maxHarvestLevel);
   }
 
   public int getMinimumHungerToUse() {

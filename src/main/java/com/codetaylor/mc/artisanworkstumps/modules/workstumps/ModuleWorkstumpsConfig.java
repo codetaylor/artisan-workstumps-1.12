@@ -187,11 +187,17 @@ public class ModuleWorkstumpsConfig {
     public int RECIPE_REPEAT_TOOL_DAMAGE = 1;
 
     @Config.Comment({
-        "The number of tool hits required to complete a craft.",
-        "Default: " + 4
+        "The number of hits required per harvest level of the tool used.",
+        "The index into the array is the harvest level, the value at that index",
+        "is the required number of uses. The array can be expanded as needed.",
+        "If the harvest level of the tool used exceeds the array length, the",
+        "last element in the array is used.",
+        "",
+        "ie. {wood, stone, iron, diamond}",
+        "Valid values are in the range: [1,+int]",
+        "Default: {4, 3, 2, 1}"
     })
-    @Config.RangeInt(min = 1)
-    public int HITS_PER_CRAFT = 4;
+    public int[] HITS_PER_CRAFT = new int[]{4, 3, 2, 1};
 
     @Config.Comment({
         "The maximum stack size for each slot in the crafting grid.",

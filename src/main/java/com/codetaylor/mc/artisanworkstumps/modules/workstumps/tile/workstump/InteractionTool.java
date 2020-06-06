@@ -247,7 +247,7 @@ public class InteractionTool
     world.playSound(null, hitPos, SoundEvents.BLOCK_WOOD_HIT, SoundCategory.BLOCKS, 1, 1);
 
     if (recipe != null) {
-      tile.addRecipeProgress(1f / tile.getHitsPerCraft());
+      tile.addRecipeProgress(1f / tile.getHitsPerCraft(player.getHeldItemMainhand()));
 
       if (tile.getExhaustionCostPerHit() > 0) {
         player.addExhaustion((float) tile.getExhaustionCostPerHit());
