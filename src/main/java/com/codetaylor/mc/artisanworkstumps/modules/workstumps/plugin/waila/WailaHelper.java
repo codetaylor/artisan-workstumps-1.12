@@ -1,0 +1,54 @@
+package com.codetaylor.mc.artisanworkstumps.modules.workstumps.plugin.waila;
+
+import mcp.mobius.waila.api.SpecialChars;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+
+public final class WailaHelper {
+
+  public static final String WAILA_STACK = "waila.stack";
+  public static final String WAILA_PROGRESS = "waila.progress";
+
+  public static String getProgressRenderString(int progress, int total) {
+
+    return SpecialChars.getRenderString(WAILA_PROGRESS, String.valueOf(WailaHelper.getCorrectDisplayProgress(progress)), String.valueOf(total));
+  }
+
+  public static String getStackRenderString(ItemStack stack) {
+
+    String result = "";
+
+    if (stack.isEmpty()) {
+      result += SpecialChars.getRenderString(WAILA_STACK, "2");
+
+    } else {
+      ResourceLocation registryName = stack.getItem().getRegistryName();
+      String name = "MISSING";
+
+      if (registryName != null) {
+        name = registryName.toString();
+      }
+
+      result += SpecialChars.getRenderString(
+          WAILA_STACK,
+          "1",
+          name,
+          String.valueOf(stack.getCount()),
+          String.valueOf(stack.getItemDamage())
+      );
+    }
+
+    return result;
+  }
+
+  public static int getCorrectDisplayProgress(float progress) {
+
+    int offset = 3;
+    return (int) ((progress * 0.77f) + offset);
+  }
+
+  private WailaHelper() {
+    //
+  }
+
+}

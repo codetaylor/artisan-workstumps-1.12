@@ -103,15 +103,15 @@ public class ModuleWorkstumpsConfig {
       }
     }
 
-    private static boolean matches(ItemStack heldItemStack, String itemString) throws MalformedRecipeItemException {
+    private static boolean matches(ItemStack itemStack, String itemString) throws MalformedRecipeItemException {
 
       ParseResult parseResult = RecipeItemParser.INSTANCE.parse(itemString);
 
       if ("ore".equals(parseResult.getDomain())) {
-        return OreDictHelper.contains(parseResult.getPath(), heldItemStack);
+        return OreDictHelper.contains(parseResult.getPath(), itemStack);
 
       } else {
-        Item item = heldItemStack.getItem();
+        Item item = itemStack.getItem();
         ResourceLocation registryName = item.getRegistryName();
 
         if (registryName == null) {
@@ -120,7 +120,7 @@ public class ModuleWorkstumpsConfig {
 
         return registryName.getResourceDomain().equals(parseResult.getDomain())
             && registryName.getResourcePath().equals(parseResult.getPath())
-            && (parseResult.getMeta() == OreDictionary.WILDCARD_VALUE || parseResult.getMeta() == heldItemStack.getMetadata());
+            && (parseResult.getMeta() == OreDictionary.WILDCARD_VALUE || parseResult.getMeta() == itemStack.getMetadata());
       }
     }
 

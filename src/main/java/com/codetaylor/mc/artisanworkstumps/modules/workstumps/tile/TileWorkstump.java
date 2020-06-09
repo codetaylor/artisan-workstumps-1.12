@@ -317,6 +317,7 @@ public class TileWorkstump
     return null;
   }
 
+  @Nullable
   public IArtisanRecipe getWorkstumpRecipe(EntityPlayer player) {
 
     int playerExperience = EnchantmentHelper.getPlayerExperienceTotal(player);
