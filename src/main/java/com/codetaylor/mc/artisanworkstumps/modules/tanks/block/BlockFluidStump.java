@@ -317,7 +317,7 @@ public class BlockFluidStump
               String localizedName = fluidStack.getLocalizedName();
               int amount = fluidStack.amount;
               int capacity = ModuleTanksConfig.FLUID_STUMP.CAPACITY;
-              tooltip.add(I18n.translateToLocalFormatted("gui.pyrotech.tooltip.fluid", localizedName, amount, capacity));
+              tooltip.add(I18n.translateToLocalFormatted("gui.artisanworkstumps.tooltip.fluid", localizedName, amount, capacity));
             }
           }
         }
@@ -325,16 +325,16 @@ public class BlockFluidStump
     }
 
     boolean hotFluids = ModuleTanksConfig.FLUID_STUMP.HOLDS_HOT_FLUIDS;
-    tooltip.add((hotFluids ? TextFormatting.GREEN : TextFormatting.RED) + I18n.translateToLocalFormatted("gui.pyrotech.tooltip.hot.fluids." + hotFluids));
+    tooltip.add((hotFluids ? TextFormatting.GREEN : TextFormatting.RED) + I18n.translateToLocalFormatted("gui.artisanworkstumps.tooltip.hot.fluids." + hotFluids));
 
     boolean holdsContents = ModuleTanksConfig.FLUID_STUMP.HOLDS_CONTENTS_WHEN_BROKEN;
-    tooltip.add((holdsContents ? TextFormatting.GREEN : TextFormatting.RED) + I18n.translateToLocalFormatted("gui.pyrotech.tooltip.contents.retain." + holdsContents));
+    tooltip.add((holdsContents ? TextFormatting.GREEN : TextFormatting.RED) + I18n.translateToLocalFormatted("gui.artisanworkstumps.tooltip.contents.retain." + holdsContents));
   }
 
   private void addInformationCapacity(@Nonnull List<String> tooltip) {
 
     int capacity = ModuleTanksConfig.FLUID_STUMP.CAPACITY;
-    tooltip.add(I18n.translateToLocalFormatted("gui.pyrotech.tooltip.fluid.capacity", capacity));
+    tooltip.add(I18n.translateToLocalFormatted("gui.artisanworkstumps.tooltip.fluid.capacity", capacity));
   }
 
   // ---------------------------------------------------------------------------

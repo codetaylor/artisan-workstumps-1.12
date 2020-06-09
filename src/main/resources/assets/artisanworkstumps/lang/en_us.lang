@@ -24,9 +24,9 @@ tile.artisanworkstumps.workstump_potter.name=Potter's Workstump
 
 tile.artisanworkstumps.fluidstump.name=Artisan's Fluid Stump
 
-gui.pyrotech.tooltip.contents.retain.true=Keeps contents when broken.
-gui.pyrotech.tooltip.contents.retain.false=Destroys contents when broken.
-gui.pyrotech.tooltip.fluid=%s: %d / %d
-gui.pyrotech.tooltip.fluid.capacity=Capacity: %d mB
-gui.pyrotech.tooltip.hot.fluids.true=Can hold hot fluids.
-gui.pyrotech.tooltip.hot.fluids.false=Breaks with hot fluids.
+gui.artisanworkstumps.tooltip.contents.retain.true=Keeps contents when broken.
+gui.artisanworkstumps.tooltip.contents.retain.false=Destroys contents when broken.
+gui.artisanworkstumps.tooltip.fluid=%s: %d / %d
+gui.artisanworkstumps.tooltip.fluid.capacity=Capacity: %d mB
+gui.artisanworkstumps.tooltip.hot.fluids.true=Can hold hot fluids.
+gui.artisanworkstumps.tooltip.hot.fluids.false=Breaks with hot fluids.
