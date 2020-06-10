@@ -17,7 +17,7 @@ import net.minecraftforge.fluids.FluidTank;
 
 import javax.annotation.Nonnull;
 
-public class TESRFluidStump
+public class TESRFluidTank
     extends FastTESR<TileTankBase> {
 
   private static final float PX = 0.0625f;
@@ -60,7 +60,7 @@ public class TESRFluidStump
 
       IBlockState blockState = world.getBlockState(tile.getPos());
 
-      if (blockState.getBlock() != ModuleTanks.Blocks.FLUID_STUMP) {
+      if (blockState.getBlock() != ModuleTanks.Blocks.LOG_BASIN) {
         return;
       }
 

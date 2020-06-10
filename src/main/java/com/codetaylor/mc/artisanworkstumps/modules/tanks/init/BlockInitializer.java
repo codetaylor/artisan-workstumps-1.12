@@ -1,9 +1,9 @@
 package com.codetaylor.mc.artisanworkstumps.modules.tanks.init;
 
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanks;
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockFluidStump;
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.client.render.TESRFluidStump;
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockLogBasin;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.client.render.TESRFluidTank;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileLogBasin;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import com.codetaylor.mc.athenaeum.util.ModelRegistrationHelper;
 import net.minecraft.tileentity.TileEntity;
@@ -17,9 +17,9 @@ public final class BlockInitializer {
 
   public static void onRegister(Registry registry) {
 
-    registry.registerBlockWithItem(new BlockFluidStump(), BlockFluidStump.NAME);
+    registry.registerBlockWithItem(new BlockLogBasin(), BlockLogBasin.NAME);
 
-    BlockInitializer.registerTileEntity(registry, TileFluidStump.class);
+    BlockInitializer.registerTileEntity(registry, TileLogBasin.class);
   }
 
   @SideOnly(Side.CLIENT)
@@ -28,11 +28,11 @@ public final class BlockInitializer {
     registry.registerClientModelRegistrationStrategy(() -> {
 
       ModelRegistrationHelper.registerBlockItemModels(
-          ModuleTanks.Blocks.FLUID_STUMP
+          ModuleTanks.Blocks.LOG_BASIN
       );
     });
 
-    ClientRegistry.bindTileEntitySpecialRenderer(TileFluidStump.class, new TESRFluidStump());
+    ClientRegistry.bindTileEntitySpecialRenderer(TileLogBasin.class, new TESRFluidTank());
   }
 
   private static void registerTileEntity(Registry registry, Class<? extends TileEntity> tileEntityClass) {

@@ -1,10 +1,10 @@
 {
   "parent": "block/block",
   "textures": {
-    "6": "artisanworkstumps:blocks/fluid_stump_side",
-    "7": "artisanworkstumps:blocks/fluid_stump_inside",
-    "8": "artisanworkstumps:blocks/fluid_stump_top",
-    "9": "artisanworkstumps:blocks/fluid_stump_bottom",
+    "6": "artisanworkstumps:blocks/log_basin_side",
+    "7": "artisanworkstumps:blocks/log_basin_inside",
+    "8": "artisanworkstumps:blocks/log_basin_top",
+    "9": "artisanworkstumps:blocks/log_basin_bottom",
     "particle": "blocks/log_oak",
     "log": "blocks/log_oak_top"
   },

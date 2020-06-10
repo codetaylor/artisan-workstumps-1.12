@@ -31,7 +31,7 @@ public final class RecipeRepeat {
       ItemStack itemStack = event.getItemStack();
 
       if (block instanceof BlockWorkstump
-          && itemStack.getItem() != Item.getItemFromBlock(ModuleTanks.Blocks.FLUID_STUMP)) {
+          && itemStack.getItem() != Item.getItemFromBlock(ModuleTanks.Blocks.LOG_BASIN)) {
 
         TileEntity tileEntity = world.getTileEntity(pos);
 

@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworkstumps.modules.tanks.block;
 
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanksConfig;
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileFluidStump;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileLogBasin;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.athenaeum.interaction.spi.IBlockInteractable;
@@ -37,18 +37,18 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-public class BlockFluidStump
+public class BlockLogBasin
     extends BlockPartialBase
     implements IBlockInteractable {
 
-  public static final String NAME = "fluidstump";
+  public static final String NAME = "log_basin";
 
   private static final AxisAlignedBB AABB_NORTH = AABBHelper.create(4, 8, 2, 16, 16, 14);
   private static final AxisAlignedBB AABB_EAST = AABBHelper.create(2, 8, 4, 14, 16, 16);
   private static final AxisAlignedBB AABB_SOUTH = AABBHelper.create(0, 8, 2, 12, 16, 14);
   private static final AxisAlignedBB AABB_WEST = AABBHelper.create(2, 8, 0, 14, 16, 12);
 
-  public BlockFluidStump() {
+  public BlockLogBasin() {
 
     super(Material.WOOD);
     this.setHarvestLevel("axe", 0);
@@ -64,8 +64,8 @@ public class BlockFluidStump
 
     TileEntity tileEntity = world.getTileEntity(pos);
 
-    if (tileEntity instanceof TileFluidStump) {
-      TileFluidStump tile = (TileFluidStump) tileEntity;
+    if (tileEntity instanceof TileLogBasin) {
+      TileLogBasin tile = (TileLogBasin) tileEntity;
       FluidTank fluidTank = tile.getFluidTank();
       FluidStack fluid = fluidTank.getFluid();
       int fluidAmount = fluidTank.getFluidAmount();
@@ -130,7 +130,7 @@ public class BlockFluidStump
 
     IBlockState blockState = world.getBlockState(pos);
 
-    if (blockState.getBlock() instanceof BlockFluidStump) {
+    if (blockState.getBlock() instanceof BlockLogBasin) {
       EnumFacing facing = blockState.getValue(Properties.FACING_HORIZONTAL);
 
       if (world.isAirBlock(pos.offset(facing))) {
@@ -179,7 +179,7 @@ public class BlockFluidStump
   @Override
   public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
 
-    return new TileFluidStump();
+    return new TileLogBasin();
   }
 
   // ---------------------------------------------------------------------------

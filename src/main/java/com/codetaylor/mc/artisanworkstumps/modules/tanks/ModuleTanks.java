@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworkstumps.modules.tanks;
 
 import com.codetaylor.mc.artisanworkstumps.ModArtisanWorkstumps;
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockFluidStump;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockLogBasin;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.init.BlockInitializer;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.init.PacketInitializer;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
@@ -11,7 +11,6 @@ import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.athenaeum.network.tile.ITileDataService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -93,11 +92,11 @@ public class ModuleTanks
   @GameRegistry.ObjectHolder(MOD_ID)
   public static class Blocks {
 
-    @GameRegistry.ObjectHolder(BlockFluidStump.NAME)
-    public static final BlockFluidStump FLUID_STUMP;
+    @GameRegistry.ObjectHolder(BlockLogBasin.NAME)
+    public static final BlockLogBasin LOG_BASIN;
 
     static {
-      FLUID_STUMP = null;
+      LOG_BASIN = null;
     }
   }
 }

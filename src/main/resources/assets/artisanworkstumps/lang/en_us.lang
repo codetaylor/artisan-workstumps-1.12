@@ -29,7 +29,7 @@ gui.artisanworkstumps.waila.quantity=%s: %d
 # - Tanks Module
 # ------------------------------------------------------------------------------
 
-tile.artisanworkstumps.fluidstump.name=Artisan's Fluid Stump
+tile.artisanworkstumps.log_basin.name=Artisan's Log Basin
 
 gui.artisanworkstumps.tooltip.contents.retain.true=Keeps contents when broken.
 gui.artisanworkstumps.tooltip.contents.retain.false=Destroys contents when broken.

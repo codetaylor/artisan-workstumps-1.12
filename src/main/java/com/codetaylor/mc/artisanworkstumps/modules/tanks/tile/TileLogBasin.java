@@ -5,7 +5,7 @@ import com.codetaylor.mc.athenaeum.integration.gamestages.Stages;
 
 import javax.annotation.Nullable;
 
-public class TileFluidStump
+public class TileLogBasin
     extends TileTankBase {
 
   @Override
