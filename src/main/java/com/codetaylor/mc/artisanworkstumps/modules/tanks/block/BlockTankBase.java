@@ -1,6 +1,5 @@
 package com.codetaylor.mc.artisanworkstumps.modules.tanks.block;
 
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanksConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileTankBase;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
@@ -50,6 +49,16 @@ public abstract class BlockTankBase
 
     super(material);
   }
+
+  // ---------------------------------------------------------------------------
+  // - Configuration
+  // ---------------------------------------------------------------------------
+
+  protected abstract int getCapacity();
+
+  protected abstract boolean holdsHotFluids();
+
+  protected abstract boolean holdsContentsWhenBroken();
 
   // ---------------------------------------------------------------------------
   // - Light
@@ -148,15 +157,13 @@ public abstract class BlockTankBase
     // Serialize the TE into the item dropped.
     // Called before #breakBlock
 
-    if (this.canHoldContentsWhenBroken()) {
+    if (this.holdsContentsWhenBroken()) {
       drops.add(StackHelper.createItemStackFromTileEntity(this, 1, 0, world.getTileEntity(pos)));
 
     } else {
       super.getDrops(drops, world, pos, state, fortune);
     }
   }
-
-  protected abstract boolean canHoldContentsWhenBroken();
 
   // ---------------------------------------------------------------------------
   // - Tile Entity
@@ -302,7 +309,7 @@ public abstract class BlockTankBase
             if (fluidStack != null) {
               String localizedName = fluidStack.getLocalizedName();
               int amount = fluidStack.amount;
-              int capacity = ModuleTanksConfig.FLUID_STUMP.CAPACITY;
+              int capacity = this.getCapacity();
               tooltip.add(I18n.translateToLocalFormatted("gui.artisanworkstumps.tooltip.fluid", localizedName, amount, capacity));
             }
           }
@@ -310,16 +317,16 @@ public abstract class BlockTankBase
       }
     }
 
-    boolean hotFluids = ModuleTanksConfig.FLUID_STUMP.HOLDS_HOT_FLUIDS;
+    boolean hotFluids = this.holdsHotFluids();
     tooltip.add((hotFluids ? TextFormatting.GREEN : TextFormatting.RED) + I18n.translateToLocalFormatted("gui.artisanworkstumps.tooltip.hot.fluids." + hotFluids));
 
-    boolean holdsContents = ModuleTanksConfig.FLUID_STUMP.HOLDS_CONTENTS_WHEN_BROKEN;
+    boolean holdsContents = this.holdsContentsWhenBroken();
     tooltip.add((holdsContents ? TextFormatting.GREEN : TextFormatting.RED) + I18n.translateToLocalFormatted("gui.artisanworkstumps.tooltip.contents.retain." + holdsContents));
   }
 
   private void addInformationCapacity(@Nonnull List<String> tooltip) {
 
-    int capacity = ModuleTanksConfig.FLUID_STUMP.CAPACITY;
+    int capacity = this.getCapacity();
     tooltip.add(I18n.translateToLocalFormatted("gui.artisanworkstumps.tooltip.fluid.capacity", capacity));
   }
 

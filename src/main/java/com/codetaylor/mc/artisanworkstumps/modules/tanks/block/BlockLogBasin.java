@@ -27,7 +27,19 @@ public class BlockLogBasin
   // ---------------------------------------------------------------------------
 
   @Override
-  protected boolean canHoldContentsWhenBroken() {
+  protected int getCapacity() {
+
+    return ModuleTanksConfig.FLUID_STUMP.CAPACITY;
+  }
+
+  @Override
+  protected boolean holdsHotFluids() {
+
+    return ModuleTanksConfig.FLUID_STUMP.HOLDS_HOT_FLUIDS;
+  }
+
+  @Override
+  protected boolean holdsContentsWhenBroken() {
 
     return ModuleTanksConfig.FLUID_STUMP.HOLDS_CONTENTS_WHEN_BROKEN;
   }

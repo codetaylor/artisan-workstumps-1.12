@@ -23,11 +23,23 @@ public class BlockStoneBasin
   }
 
   // ---------------------------------------------------------------------------
-  // - Drops
+  // - Configuration
   // ---------------------------------------------------------------------------
 
   @Override
-  protected boolean canHoldContentsWhenBroken() {
+  protected int getCapacity() {
+
+    return ModuleTanksConfig.STONE_BASIN.CAPACITY;
+  }
+
+  @Override
+  protected boolean holdsHotFluids() {
+
+    return ModuleTanksConfig.STONE_BASIN.HOLDS_HOT_FLUIDS;
+  }
+
+  @Override
+  protected boolean holdsContentsWhenBroken() {
 
     return ModuleTanksConfig.STONE_BASIN.HOLDS_CONTENTS_WHEN_BROKEN;
   }
