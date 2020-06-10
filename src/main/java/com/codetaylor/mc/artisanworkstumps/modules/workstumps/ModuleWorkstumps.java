@@ -43,6 +43,12 @@ public class ModuleWorkstumps
 
     super.onPreInitializationEvent(event);
 
+    FMLInterModComms.sendFunctionMessage(
+        "theoneprobe",
+        "getTheOneProbe",
+        "com.codetaylor.mc.artisanworkstumps.modules.workstumps.plugin.top.PluginTOP$Callback"
+    );
+
     if (ModuleWorkstumpsConfig.WORKSTUMP.ALLOW_RECIPE_REPEAT) {
       MinecraftForge.EVENT_BUS.register(new RecipeRepeat.RightClickBlockEventHandler());
     }

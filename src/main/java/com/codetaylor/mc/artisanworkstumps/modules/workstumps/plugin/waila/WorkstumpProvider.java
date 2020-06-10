@@ -14,7 +14,7 @@ import java.util.List;
 
 public class WorkstumpProvider
     extends BodyProviderAdapter
-    implements WorkstumpProviderDelegate.IWorktableDisplay {
+    implements WorkstumpProviderDelegate.IWorkstumpDisplay {
 
   private final WorkstumpProviderDelegate delegate;
 

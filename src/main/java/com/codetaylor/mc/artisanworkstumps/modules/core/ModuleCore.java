@@ -11,6 +11,8 @@ import com.codetaylor.mc.athenaeum.network.tile.ITileDataService;
 import com.codetaylor.mc.athenaeum.registry.Registry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ModuleCore
     extends ModuleBase {
@@ -34,6 +36,17 @@ public class ModuleCore
     MinecraftForge.EVENT_BUS.register(new InteractionMouseScrollEventHandler(PACKET_SERVICE));
   }
 
+  @Override
+  public void onPreInitializationEvent(FMLPreInitializationEvent event) {
+
+    super.onPreInitializationEvent(event);
+
+    FMLInterModComms.sendFunctionMessage(
+        "theoneprobe",
+        "getTheOneProbe",
+        "com.codetaylor.mc.artisanworkstumps.modules.core.plugin.top.PluginTOP$Callback"
+    );
+  }
   // ---------------------------------------------------------------------------
   // - Registration
   // ---------------------------------------------------------------------------

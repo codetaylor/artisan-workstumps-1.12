@@ -29,13 +29,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class WorkstumpProviderDelegate
-    extends ProviderDelegateBase<WorkstumpProviderDelegate.IWorktableDisplay, TileWorkstump> {
+    extends ProviderDelegateBase<WorkstumpProviderDelegate.IWorkstumpDisplay, TileWorkstump> {
 
   public static final String LANG_KEY_HOVERED_ITEM_QUANTITY = "gui.artisanworkstumps.waila.quantity";
 
   private Map<String, List<Item>> defaultTools;
 
-  public WorkstumpProviderDelegate(IWorktableDisplay display) {
+  public WorkstumpProviderDelegate(IWorkstumpDisplay display) {
 
     super(display);
     this.defaultTools = new HashMap<>();
@@ -194,7 +194,7 @@ public class WorkstumpProviderDelegate
     }
   }
 
-  public interface IWorktableDisplay {
+  public interface IWorkstumpDisplay {
 
     void setRecipeProgress(ItemStack input, ItemStack output, int progress, int maxProgress);
 
