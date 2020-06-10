@@ -2,6 +2,7 @@ package com.codetaylor.mc.artisanworkstumps.modules.tanks;
 
 import com.codetaylor.mc.artisanworkstumps.ModArtisanWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockLogBasin;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockStoneBasin;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.init.BlockInitializer;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.init.PacketInitializer;
 import com.codetaylor.mc.artisanworktables.ModArtisanWorktables;
@@ -95,8 +96,12 @@ public class ModuleTanks
     @GameRegistry.ObjectHolder(BlockLogBasin.NAME)
     public static final BlockLogBasin LOG_BASIN;
 
+    @GameRegistry.ObjectHolder(BlockStoneBasin.NAME)
+    public static final BlockStoneBasin STONE_BASIN;
+
     static {
       LOG_BASIN = null;
+      STONE_BASIN = null;
     }
   }
 }

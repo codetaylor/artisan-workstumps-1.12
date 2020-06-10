@@ -1,11 +1,10 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.event;
 
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanks;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockTankBase;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +30,7 @@ public final class RecipeRepeat {
       ItemStack itemStack = event.getItemStack();
 
       if (block instanceof BlockWorkstump
-          && itemStack.getItem() != Item.getItemFromBlock(ModuleTanks.Blocks.LOG_BASIN)) {
+          && !this.isFluidTank(itemStack)) {
 
         TileEntity tileEntity = world.getTileEntity(pos);
 
@@ -40,6 +39,11 @@ public final class RecipeRepeat {
           event.setUseItem(Event.Result.DENY);
         }
       }
+    }
+
+    private boolean isFluidTank(ItemStack itemStack) {
+
+      return (Block.getBlockFromItem(itemStack.getItem()) instanceof BlockTankBase);
     }
   }
 

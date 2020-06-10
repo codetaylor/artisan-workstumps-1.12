@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.block;
 
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanks;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockTankBase;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.workstump.EnumDamagedSide;
 import com.codetaylor.mc.athenaeum.interaction.spi.IBlockInteractable;
@@ -8,6 +8,7 @@ import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
 import com.codetaylor.mc.athenaeum.spi.BlockPartialBase;
 import com.codetaylor.mc.athenaeum.util.Properties;
 import com.codetaylor.mc.athenaeum.util.StackHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
@@ -15,7 +16,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -92,11 +92,16 @@ public class BlockWorkstump
   @Override
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-    if (facing != EnumFacing.UP && player.getHeldItem(hand).getItem() == Item.getItemFromBlock(ModuleTanks.Blocks.LOG_BASIN)) {
+    if (facing != EnumFacing.UP && this.isFluidTank(player, hand)) {
       return false;
     }
 
     return this.interact(IInteraction.EnumType.MouseClick, world, pos, state, player, hand, facing, hitX, hitY, hitZ);
+  }
+
+  private boolean isFluidTank(EntityPlayer player, EnumHand hand) {
+
+    return (Block.getBlockFromItem(player.getHeldItem(hand).getItem()) instanceof BlockTankBase);
   }
 
   @Override
