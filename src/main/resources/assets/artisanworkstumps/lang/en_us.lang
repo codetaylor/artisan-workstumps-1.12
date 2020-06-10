@@ -37,3 +37,6 @@ gui.artisanworkstumps.tooltip.fluid=%s: %d / %d
 gui.artisanworkstumps.tooltip.fluid.capacity=Capacity: %d mB
 gui.artisanworkstumps.tooltip.hot.fluids.true=Can hold hot fluids.
 gui.artisanworkstumps.tooltip.hot.fluids.false=Breaks with hot fluids.
+
+gui.artisanworkstumps.waila.tank.fluid=%s: %d of %d mB
+gui.artisanworkstumps.waila.tank.empty=Empty: %d of %d mB
