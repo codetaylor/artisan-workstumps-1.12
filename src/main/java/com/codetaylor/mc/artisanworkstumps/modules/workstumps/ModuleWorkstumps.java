@@ -22,6 +22,7 @@ public class ModuleWorkstumps
     extends ModuleBase {
 
   public static final String MOD_ID = ModArtisanWorkstumps.MOD_ID;
+  public static final String MOD_NAME = ModArtisanWorkstumps.NAME;
   public static final CreativeTabs CREATIVE_TAB = ModArtisanWorktables.CREATIVE_TAB;
 
   public static IPacketService PACKET_SERVICE;
@@ -36,6 +37,11 @@ public class ModuleWorkstumps
 
     PACKET_SERVICE = this.enableNetwork();
     TILE_DATA_SERVICE = this.enableNetworkTileDataService(PACKET_SERVICE);
+
+    this.registerIntegrationPlugin(
+        "jei",
+        "com.codetaylor.mc.artisanworkstumps.modules.workstumps.plugin.jei.PluginJEI"
+    );
   }
 
   @Override

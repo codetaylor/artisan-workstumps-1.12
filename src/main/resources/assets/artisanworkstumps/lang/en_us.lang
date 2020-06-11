@@ -25,6 +25,13 @@ gui.artisanworkstumps.waila.workstump.condition.used=Used
 gui.artisanworkstumps.waila.workstump.condition.fractured=Fractured
 gui.artisanworkstumps.waila.quantity=%s: %d
 
+jei.artisanworkstumps.tooltip.shapeless.recipe=Shapeless Recipe
+jei.artisanworkstumps.tooltip.chance=%s%s%% chance to craft
+jei.artisanworkstumps.xp.cost=XP Cost: %d
+jei.artisanworkstumps.level.cost=Level Cost: %d
+jei.artisanworkstumps.xp.required=Minimum XP: %d
+jei.artisanworkstumps.level.required=Minimum Level: %d
+
 # ------------------------------------------------------------------------------
 # - Tanks Module
 # ------------------------------------------------------------------------------
