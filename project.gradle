@@ -28,30 +28,17 @@ ext {
 
 repositories {
 
-  // mavenCentral()
-
-  // hwyla
-  maven { url "http://tehnut.info/maven" }
-
   maven { // TOP
     name 'tterrag maven'
     url "http://maven.tterrag.com/"
   }
 
-  flatDir {
-    dirs 'libs'
-  }
 }
 
 dependencies {
-
-  // compile ''
-  // compile files('')
-  // compile fg.deobf('')
-
   compile project(':athenaeum')
   compile project(':artisan-worktables')
 
-  compile 'mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2'
+  compile 'curse.maven:hwyla:2568751'
   compile 'mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17'
 }
