@@ -24,7 +24,8 @@ public class ModArtisanWorkstumps {
   public static final String MOD_ID = "artisanworkstumps";
   public static final String VERSION = "@@VERSION@@";
   public static final String NAME = "Artisan Workstumps";
-  public static final String DEPENDENCIES = "required-after:athenaeum;required-after:artisanworktables;";
+  public static final String DEPENDENCIES = "required-after:athenaeum;" +
+      "required-after:artisanworktables;";
 
   public static final Logger LOGGER = LogManager.getLogger(ModArtisanWorkstumps.class);
 
