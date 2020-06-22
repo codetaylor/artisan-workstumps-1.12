@@ -7,7 +7,6 @@ import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
 import com.codetaylor.mc.artisanworktables.api.ArtisanToolHandlers;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.artisanworktables.api.recipe.IToolHandler;
 import com.codetaylor.mc.athenaeum.interaction.api.InteractionBounds;
@@ -24,11 +23,8 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -265,7 +261,7 @@ public class InteractionTool
         tile.setRetainedRecipeName(recipe.getName());
 
         List<ItemStack> output = new ArrayList<>();
-        recipe.doCraft(this.createCraftingContext(tile, player, recipe.getFluidIngredient()), output);
+        recipe.doCraft(tile.createCraftingContext(player), output);
 
         if (recipe.getToolCount() == 0) {
           // no damage was done to the tool, we need to damage it here
@@ -298,23 +294,6 @@ public class InteractionTool
         }
       }
     }
-  }
-
-  private ICraftingContext createCraftingContext(TileWorkstump tile, EntityPlayer player, @Nullable FluidStack fluidIngredient) {
-
-    if (fluidIngredient != null) {
-      IFluidHandler capability = tile.getFluidHandler();
-
-      if (capability != null) {
-        FluidStack drained = capability.drain(fluidIngredient, false);
-
-        if (drained != null && drained.amount == fluidIngredient.amount) {
-          return FactoryCraftingContext.create(tile, player, capability);
-        }
-      }
-    }
-
-    return FactoryCraftingContext.create(tile, player, null);
   }
 
   private void doRecipeProgressClient(TileWorkstump tile, World world, float hitX, float hitY, float hitZ) {

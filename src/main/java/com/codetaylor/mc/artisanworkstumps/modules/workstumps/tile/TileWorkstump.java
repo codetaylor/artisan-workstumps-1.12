@@ -9,10 +9,14 @@ import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstu
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.workstump.*;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.util.ToolHarvestLevelHelper;
 import com.codetaylor.mc.artisanworktables.api.ArtisanAPI;
+import com.codetaylor.mc.artisanworktables.api.ArtisanRegistries;
+import com.codetaylor.mc.artisanworktables.api.internal.recipe.ICraftingContext;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.ISecondaryIngredientMatcher;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.RecipeRegistry;
 import com.codetaylor.mc.artisanworktables.api.internal.reference.EnumTier;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.IRequirementContext;
+import com.codetaylor.mc.artisanworktables.api.recipe.requirement.RequirementContextSupplier;
 import com.codetaylor.mc.athenaeum.integration.gamestages.Stages;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
 import com.codetaylor.mc.athenaeum.interaction.spi.ITileInteractable;
@@ -34,11 +38,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -337,6 +343,17 @@ public class TileWorkstump
       }
     }
 
+    IForgeRegistry<RequirementContextSupplier> contextSupplierRegistry = ArtisanRegistries.REQUIREMENT_CONTEXT_SUPPLIER;
+    Map<ResourceLocation, IRequirementContext> contextMap = new HashMap<>();
+    ICraftingContext craftingContext = this.createCraftingContext(player);
+
+    for (Map.Entry<ResourceLocation, RequirementContextSupplier> entry : contextSupplierRegistry.getEntries()) {
+      RequirementContextSupplier contextSupplier = entry.getValue();
+      IRequirementContext context = contextSupplier.get();
+      context.initialize(craftingContext);
+      contextMap.put(entry.getKey(), context);
+    }
+
     return registry.findRecipe(
         playerExperience,
         playerLevels,
@@ -346,8 +363,19 @@ public class TileWorkstump
         simulatedFluidStackAvailable,
         ISecondaryIngredientMatcher.FALSE,
         EnumTier.WORKTABLE,
-        Collections.emptyMap()
+        contextMap
     );
+  }
+
+  public ICraftingContext createCraftingContext(EntityPlayer player) {
+
+    IFluidHandler capability = this.getFluidHandler();
+
+    if (capability != null) {
+      return FactoryCraftingContext.create(this, player, capability);
+    }
+
+    return FactoryCraftingContext.create(this, player, null);
   }
 
   private int getGridMaxStackSize() {
