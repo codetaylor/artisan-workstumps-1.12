@@ -1,7 +1,7 @@
 package com.codetaylor.mc.artisanworkstumps.modules.tanks.block;
 
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanksConfig;
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileLogBasin;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileStoneBasin;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -10,15 +10,15 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BlockLogBasin
+public class BlockStoneBasin
     extends BlockTankBase {
 
-  public static final String NAME = "log_basin";
+  public static final String NAME = "stone_basin";
 
-  public BlockLogBasin() {
+  public BlockStoneBasin() {
 
-    super(Material.WOOD);
-    this.setHarvestLevel("axe", 0);
+    super(Material.ROCK);
+    this.setHarvestLevel("pickaxe", 0);
     this.setHardness(2);
   }
 
@@ -29,19 +29,19 @@ public class BlockLogBasin
   @Override
   protected int getCapacity() {
 
-    return ModuleTanksConfig.FLUID_STUMP.CAPACITY;
+    return ModuleTanksConfig.STONE_BASIN.CAPACITY;
   }
 
   @Override
   protected boolean holdsHotFluids() {
 
-    return ModuleTanksConfig.FLUID_STUMP.HOLDS_HOT_FLUIDS;
+    return ModuleTanksConfig.STONE_BASIN.HOLDS_HOT_FLUIDS;
   }
 
   @Override
   protected boolean holdsContentsWhenBroken() {
 
-    return ModuleTanksConfig.FLUID_STUMP.HOLDS_CONTENTS_WHEN_BROKEN;
+    return ModuleTanksConfig.STONE_BASIN.HOLDS_CONTENTS_WHEN_BROKEN;
   }
 
   // ---------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public class BlockLogBasin
   @Override
   public TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState state) {
 
-    return new TileLogBasin();
+    return new TileStoneBasin();
   }
 
 }

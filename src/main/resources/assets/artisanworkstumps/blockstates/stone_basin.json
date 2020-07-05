@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "artisanworkstumps:stone_basin"
+  },
+  "variants": {
+    "facing": {
+      "north": {
+        "y": 270
+      },
+      "east": {
+      },
+      "south": {
+        "y": 90
+      },
+      "west": {
+        "y": 180
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 package com.codetaylor.mc.artisanworkstumps.modules.tanks.client.render;
 
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.ModuleTanks;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockTankBase;
 import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileTankBase;
 import com.codetaylor.mc.athenaeum.util.Properties;
 import net.minecraft.block.state.IBlockState;
@@ -60,7 +60,7 @@ public class TESRFluidTank
 
       IBlockState blockState = world.getBlockState(tile.getPos());
 
-      if (blockState.getBlock() != ModuleTanks.Blocks.LOG_BASIN) {
+      if (!(blockState.getBlock() instanceof BlockTankBase)) {
         return;
       }
 

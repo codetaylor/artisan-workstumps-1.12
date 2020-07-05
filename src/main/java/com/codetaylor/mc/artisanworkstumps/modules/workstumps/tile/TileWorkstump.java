@@ -1,8 +1,8 @@
 package com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile;
 
 import com.codetaylor.mc.artisanworkstumps.ModArtisanWorkstumps;
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockLogBasin;
-import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileLogBasin;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.block.BlockTankBase;
+import com.codetaylor.mc.artisanworkstumps.modules.tanks.tile.TileTankBase;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.block.BlockWorkstump;
@@ -271,7 +271,7 @@ public class TileWorkstump
 
   public boolean hasFluidStump() {
 
-    return this.getFluidStump() != null;
+    return this.getTank() != null;
   }
 
   /**
@@ -280,7 +280,7 @@ public class TileWorkstump
   @Nullable
   public IFluidHandler getFluidHandler() {
 
-    TileLogBasin tileEntity = this.getFluidStump();
+    TileTankBase tileEntity = this.getTank();
 
     if (tileEntity == null) {
       return null;
@@ -296,14 +296,14 @@ public class TileWorkstump
    * @return the connected fluid tank or null if none
    */
   @Nullable
-  public TileLogBasin getFluidStump() {
+  public TileTankBase getTank() {
 
     for (int i = 0; i < EnumFacing.HORIZONTALS.length; i++) {
       BlockPos offset = this.getPos().offset(EnumFacing.HORIZONTALS[i]);
 
       IBlockState blockState = this.world.getBlockState(offset);
 
-      if (!(blockState.getBlock() instanceof BlockLogBasin)) {
+      if (!(blockState.getBlock() instanceof BlockTankBase)) {
         continue;
       }
 
@@ -313,11 +313,11 @@ public class TileWorkstump
 
       TileEntity tileEntity = this.world.getTileEntity(offset);
 
-      if (!(tileEntity instanceof TileLogBasin)) {
+      if (!(tileEntity instanceof TileTankBase)) {
         continue;
       }
 
-      return (TileLogBasin) tileEntity;
+      return (TileTankBase) tileEntity;
     }
 
     return null;
@@ -643,7 +643,7 @@ public class TileWorkstump
 
     // Break the connected fluid tank if it is attached to a damaged side.
 
-    TileLogBasin fluidTank = this.getFluidStump();
+    TileTankBase fluidTank = this.getTank();
 
     if (fluidTank != null) {
       BlockPos fluidTankPos = fluidTank.getPos();

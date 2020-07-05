@@ -37,6 +37,7 @@ jei.artisanworkstumps.level.required=Minimum Level: %d
 # ------------------------------------------------------------------------------
 
 tile.artisanworkstumps.log_basin.name=Artisan's Log Basin
+tile.artisanworkstumps.stone_basin.name=Artisan's Stone Basin
 
 gui.artisanworkstumps.tooltip.contents.retain.true=Keeps contents when broken.
 gui.artisanworkstumps.tooltip.contents.retain.false=Destroys contents when broken.
