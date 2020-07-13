@@ -126,9 +126,9 @@ public class JEICategoryWorkstump
       stacks.set(10, tools.get(0));
     }
 
-    stacks.init(11, false, 148 - 4, 13 - 13);
-    stacks.init(12, false, 148 - 4, 31 - 13);
-    stacks.init(13, false, 148 - 4, 49 - 13);
+    stacks.init(11, false, 148 - 15, 13 - 13);
+    stacks.init(12, false, 148 - 15, 31 - 13);
+    stacks.init(13, false, 148 - 15, 49 - 13);
 
     ItemStack extraOutput = wrapper.getSecondaryOutput();
 

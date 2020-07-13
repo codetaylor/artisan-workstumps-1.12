@@ -243,8 +243,8 @@ public class JEIRecipeWrapper
     GlStateManager.enableDepth();
     GlStateManager.pushMatrix();
 
-    int xPos = 331 - 4;
-    int yPos = 32 - 13;
+    int xPos = 331 - 30;
+    int yPos = 32 - 26;
 
     if (!this.artisanRecipe.getSecondaryOutput().isEmpty()) {
       float chance = this.artisanRecipe.getSecondaryOutputChance();
