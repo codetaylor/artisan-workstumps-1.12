@@ -120,12 +120,13 @@ public final class FactoryCraftingContext {
   }
 
   /**
-   * Used as a dummy secondary output handler that returns the given item stack
-   * when inserted in order to force the recipe logic to output the items into
-   * the world.
+   * Used as a dummy secondary output handler that returns an empty item stack
+   * to simulate consuming any item. This prevents the recipe logic from spawning
+   * the stack in the world, so the worktable can spawn the stack.
    *
    * @see com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe#generateExtraOutput(ICraftingContext, IArtisanItemStack)
    */
+  @SuppressWarnings("JavadocReference")
   public static class SecondaryOutputHandler
       implements IItemHandler {
 
@@ -146,7 +147,7 @@ public final class FactoryCraftingContext {
     @Override
     public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
 
-      return stack;
+      return ItemStack.EMPTY;
     }
 
     @Nonnull

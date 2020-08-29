@@ -1,3 +1,10 @@
+**1.1.2**
+
+  * **Fixed:**
+    * Generating incorrect quantities of secondary outputs
+
+---
+
 **1.1.1**
 
   * **Fixed:**
