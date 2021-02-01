@@ -1,3 +1,10 @@
+**1.1.3**
+
+  * **Fixed:**
+    * Recipe function mishandling [(#1)](https://github.com/codetaylor/artisan-workstumps/issues/1)
+
+---
+
 **1.1.2**
 
   * **Fixed:**

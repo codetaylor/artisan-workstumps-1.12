@@ -67,7 +67,7 @@ public class WorkstumpProviderDelegate
       // Display input item and recipe output.
       IArtisanRecipe workstumpRecipe = tile.getWorkstumpRecipe(player);
 
-      if (workstumpRecipe != null) {
+      if (workstumpRecipe != null && !workstumpRecipe.getBaseOutput(tile.createCraftingContext(player)).isEmpty()) {
         ItemStack recipeOutput = workstumpRecipe.getOutputWeightPairList().get(0).getOutput().toItemStack();
 
         if (!recipeOutput.isEmpty()) {

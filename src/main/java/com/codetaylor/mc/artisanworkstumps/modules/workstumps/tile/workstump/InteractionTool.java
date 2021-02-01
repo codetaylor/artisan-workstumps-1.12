@@ -68,6 +68,10 @@ public class InteractionTool
 
       if (recipe != null) {
 
+        if (recipe.getBaseOutput(tile.createCraftingContext(player)).isEmpty()) {
+          return false;
+        }
+
         if (recipe.getToolCount() == 0) {
           return ModuleWorkstumpsConfig.WORKSTUMP.isDefaultTool(tile.getTableName(), heldItemStack)
               && ArtisanToolHandlers.get(heldItemStack).canAcceptAllDamage(heldItemStack, ModuleWorkstumpsConfig.WORKSTUMP.DEFAULT_RECIPE_TOOL_DAMAGE);
