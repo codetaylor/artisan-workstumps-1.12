@@ -4,7 +4,6 @@ import com.codetaylor.mc.artisanworkstumps.ModArtisanWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.lib.spi.plugin.ProviderDelegateBase;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.tile.TileWorkstump;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.recipe.IArtisanRecipe;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteraction;
 import com.codetaylor.mc.athenaeum.interaction.spi.IInteractionItemStack;
@@ -76,7 +75,7 @@ public class WorkstumpProviderDelegate
 
           if (workstumpRecipe.getToolCount() > 0) {
             toolList = Arrays.stream(workstumpRecipe.getToolEntries()[0].getToolStacks())
-                .map(IArtisanItemStack::getItem)
+                .map(ItemStack::getItem)
                 .collect(Collectors.toList());
 
           } else {

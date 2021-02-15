@@ -4,7 +4,6 @@ import com.codetaylor.mc.artisanworkstumps.ModArtisanWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumps;
 import com.codetaylor.mc.artisanworkstumps.modules.workstumps.ModuleWorkstumpsConfig;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanIngredient;
-import com.codetaylor.mc.artisanworktables.api.internal.recipe.IArtisanItemStack;
 import com.codetaylor.mc.artisanworktables.api.internal.recipe.OutputWeightPair;
 import com.codetaylor.mc.artisanworktables.api.recipe.ArtisanRecipe;
 import com.codetaylor.mc.athenaeum.gui.GuiHelper;
@@ -61,11 +60,11 @@ public class JEIRecipeWrapper
     }
 
     for (int i = 0; i < artisanRecipe.getToolCount(); i++) {
-      IArtisanItemStack[] tools = this.artisanRecipe.getTools(i);
+      ItemStack[] tools = this.artisanRecipe.getTools(i);
       List<ItemStack> itemStackList = new ArrayList<>(tools.length);
 
-      for (IArtisanItemStack tool : tools) {
-        itemStackList.add(tool.toItemStack().copy());
+      for (ItemStack tool : tools) {
+        itemStackList.add(tool.copy());
       }
 
       this.tools.add(itemStackList);
